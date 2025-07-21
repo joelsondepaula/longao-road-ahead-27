@@ -95,7 +95,7 @@ const Hero = () => {
           <Button 
             variant="outline" 
             size="lg"
-            className="border-2 border-road-white text-road-white hover:bg-road-white hover:text-asphalt-dark font-semibold text-lg px-10 py-6 transition-all duration-300"
+            className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-lg px-10 py-6 transition-all duration-300"
             onClick={() => scrollToSection('desafio')}
           >
             Conheça a jornada
