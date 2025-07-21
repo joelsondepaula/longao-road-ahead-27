@@ -55,6 +55,12 @@ export default {
 				'road-yellow': 'hsl(var(--road-yellow))',
 				'asphalt-dark': 'hsl(var(--asphalt-dark))',
 				'road-white': 'hsl(var(--road-white))',
+				'trust-blue': 'hsl(var(--trust-blue))',
+				'success-green': 'hsl(var(--success-green))',
+				'energy-orange': 'hsl(var(--energy-orange))',
+				'premium-gold': 'hsl(var(--premium-gold))',
+				'premium-silver': 'hsl(var(--premium-silver))',
+				'premium-bronze': 'hsl(var(--premium-bronze))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

@@ -1,9 +1,12 @@
 
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
+import Stats from "@/components/Stats";
 import About from "@/components/About";
 import Challenge from "@/components/Challenge";
+import Sponsors from "@/components/Sponsors";
 import Media from "@/components/Media";
+import PressKit from "@/components/PressKit";
 import Support from "@/components/Support";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -16,10 +19,17 @@ const Index = () => {
         <div id="hero">
           <Hero />
         </div>
+        <Stats />
         <About />
-        <Challenge />
+        <div id="desafio">
+          <Challenge />
+        </div>
+        <Sponsors />
         <Media />
-        <Support />
+        <PressKit />
+        <div id="apoio">
+          <Support />
+        </div>
         <Contact />
       </main>
       <Footer />

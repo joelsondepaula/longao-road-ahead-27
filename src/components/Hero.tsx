@@ -24,23 +24,39 @@ const Hero = () => {
           Do ponto mais oriental das <span className="text-road-yellow">Américas</span> ao <span className="text-road-yellow">fim do mundo</span>
         </h1>
         
-        <p className="text-lg md:text-xl lg:text-2xl text-road-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl lg:text-2xl text-road-white/90 mb-8 max-w-4xl mx-auto leading-relaxed">
           Uma jornada de mais de <strong className="text-road-yellow">8.000 km</strong>, de João Pessoa até Ushuaia – 
           pedalando 200 km por dia, cruzando países e paisagens extremas, para provar que os limites estão apenas na nossa mente.
         </p>
 
+        {/* Stats Preview */}
+        <div className="flex flex-wrap justify-center gap-6 mb-12">
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
+            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">8.000km</div>
+            <div className="text-sm text-road-white/80 uppercase tracking-wider">Distância Total</div>
+          </div>
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
+            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">40 dias</div>
+            <div className="text-sm text-road-white/80 uppercase tracking-wider">Jornada</div>
+          </div>
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
+            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">12 países</div>
+            <div className="text-sm text-road-white/80 uppercase tracking-wider">Atravessados</div>
+          </div>
+        </div>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button 
             size="lg" 
-            className="bg-road-yellow text-asphalt-dark hover:bg-road-yellow/90 font-semibold text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
-            onClick={() => scrollToSection('apoio')}
+            className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-lg px-10 py-6 transition-all duration-300 group"
+            onClick={() => scrollToSection('patrocinadores')}
           >
-            Apoie o desafio
+            <span className="group-hover:scale-105 transition-transform">Seja um Patrocinador</span>
           </Button>
           <Button 
             variant="outline" 
             size="lg"
-            className="border-road-white text-road-white hover:bg-road-white hover:text-asphalt-dark font-semibold text-lg px-8 py-6 transition-all duration-300"
+            className="border-2 border-road-white text-road-white hover:bg-road-white hover:text-asphalt-dark font-semibold text-lg px-10 py-6 transition-all duration-300"
             onClick={() => scrollToSection('desafio')}
           >
             Conheça a jornada

@@ -39,14 +39,27 @@
     --asphalt-dark: 0 0% 8%;
     --road-white: 0 0% 98%;
     
+    /* Cores para credibilidade e patrocínio */
+    --trust-blue: 214 84% 56%;
+    --success-green: 142 76% 36%;
+    --energy-orange: 25 95% 53%;
+    --premium-gold: 45 85% 47%;
+    --premium-silver: 0 0% 75%;
+    --premium-bronze: 30 50% 40%;
+    
     /* Gradients */
     --gradient-road: linear-gradient(135deg, hsl(var(--asphalt-dark)), hsl(0 0% 15%));
     --gradient-sunrise: linear-gradient(135deg, hsl(var(--road-yellow)), hsl(35 100% 60%));
     --gradient-hero: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+    --gradient-sponsor: linear-gradient(135deg, hsl(var(--premium-gold)), hsl(var(--road-yellow)));
+    --gradient-trust: linear-gradient(135deg, hsl(var(--trust-blue)), hsl(214 100% 70%));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success-green)), hsl(142 85% 45%));
     
     /* Shadows */
     --shadow-road: 0 10px 30px -10px hsl(var(--asphalt-dark) / 0.3);
     --shadow-glow: 0 0 40px hsl(var(--road-yellow) / 0.3);
+    --shadow-premium: 0 15px 35px -5px hsl(var(--premium-gold) / 0.25);
+    --shadow-trust: 0 10px 25px -5px hsl(var(--trust-blue) / 0.2);
 
     --radius: 0.5rem;
 
@@ -117,5 +130,21 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
+  }
+
+  /* Animações personalizadas */
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
   }
 }
