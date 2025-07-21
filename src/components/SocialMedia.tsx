@@ -1,4 +1,4 @@
-import { Youtube, Instagram, Clock, Activity } from "lucide-react";
+import { Youtube, Instagram, Clock, Activity, ExternalLink, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -9,104 +9,160 @@ const SocialMedia = () => {
       icon: Youtube,
       url: "https://www.youtube.com/@oreidolongao",
       description: "Canal oficial do desafio",
-      color: "text-red-600",
-      bgColor: "bg-red-50 hover:bg-red-100",
+      gradient: "from-red-500 to-red-600",
+      hoverGradient: "hover:from-red-600 hover:to-red-700",
+      iconColor: "text-white",
+      bgGradient: "bg-gradient-to-br from-red-50 to-red-100",
+      borderColor: "border-red-200",
+      shadowColor: "shadow-red-200/50",
     },
     {
-      name: "Instagram - Perfil",
+      name: "Instagram",
       icon: Instagram,
       url: "https://www.instagram.com/oreidolongao/?e=a1773c69-a632-4e86-8869-f6cfa1f8bee0&g=5",
       description: "Acompanhe nossa jornada",
-      color: "text-pink-600",
-      bgColor: "bg-pink-50 hover:bg-pink-100",
+      gradient: "from-pink-500 to-purple-600",
+      hoverGradient: "hover:from-pink-600 hover:to-purple-700",
+      iconColor: "text-white",
+      bgGradient: "bg-gradient-to-br from-pink-50 to-purple-100",
+      borderColor: "border-pink-200",
+      shadowColor: "shadow-pink-200/50",
     },
     {
-      name: "Instagram - TV Correio",
-      icon: Instagram,
+      name: "TV Correio",
+      icon: Play,
       url: "https://www.instagram.com/reel/C72d7yzpHNB/?igsh=bHYyeDg2MGM0czBo",
-      description: "Matéria sobre João Pessoa - Rio",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50 hover:bg-purple-100",
+      description: "Matéria João Pessoa → Rio",
+      gradient: "from-accent to-yellow-500",
+      hoverGradient: "hover:from-yellow-500 hover:to-accent",
+      iconColor: "text-white",
+      bgGradient: "bg-gradient-to-br from-yellow-50 to-accent/20",
+      borderColor: "border-accent",
+      shadowColor: "shadow-accent/50",
       featured: true,
+      badge: "DESTAQUE TV"
     },
     {
       name: "TikTok",
       icon: Clock,
       url: "https://www.tiktok.com/@sebastianestevan",
       description: "Conteúdo rápido e dinâmico",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50 hover:bg-blue-100",
+      gradient: "from-blue-500 to-blue-600",
+      hoverGradient: "hover:from-blue-600 hover:to-blue-700",
+      iconColor: "text-white",
+      bgGradient: "bg-gradient-to-br from-blue-50 to-blue-100",
+      borderColor: "border-blue-200",
+      shadowColor: "shadow-blue-200/50",
     },
     {
       name: "Strava",
       icon: Activity,
       url: "https://strava.app.link/2i3JiIN9bVb",
       description: "Atividades diárias e estatísticas",
-      color: "text-orange-600",
-      bgColor: "bg-orange-50 hover:bg-orange-100",
+      gradient: "from-orange-500 to-red-500",
+      hoverGradient: "hover:from-orange-600 hover:to-red-600",
+      iconColor: "text-white",
+      bgGradient: "bg-gradient-to-br from-orange-50 to-red-100",
+      borderColor: "border-orange-200",
+      shadowColor: "shadow-orange-200/50",
     },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-muted/30 to-accent/5">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-foreground mb-4">
-            Acompanhe Nossa Jornada
+    <section className="py-24 bg-gradient-to-br from-background via-muted/20 to-accent/10 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,hsl(var(--accent))_0%,transparent_50%)] opacity-10"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(var(--primary))_0%,transparent_50%)] opacity-5"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header com maior destaque */}
+        <div className="text-center mb-16 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 rounded-full mb-6">
+            <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+            <span className="text-sm font-semibold text-accent uppercase tracking-wider">
+              Siga Nossa Aventura
+            </span>
+          </div>
+          
+          <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent mb-6">
+            Redes Sociais
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Siga todas as nossas redes sociais para não perder nenhum momento da aventura épica
+          
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Acompanhe cada pedalada, cada quilômetro, cada momento épico da jornada mais desafiadora do Brasil
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {/* Grid de redes sociais com maior destaque */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
           {socialLinks.map((social, index) => (
             <Card 
               key={social.name} 
-              className={`group transition-all duration-300 hover:scale-105 hover:shadow-xl ${
-                social.featured ? 'md:col-span-2 lg:col-span-1 ring-2 ring-accent/50' : ''
+              className={`group relative transition-all duration-500 hover:scale-110 hover:-translate-y-2 ${social.bgGradient} border-2 ${social.borderColor} ${social.shadowColor} hover:shadow-2xl ${
+                social.featured ? 'md:col-span-2 lg:col-span-1 ring-4 ring-accent/30 scale-105' : ''
               }`}
+              style={{
+                animationDelay: `${index * 100}ms`
+              }}
             >
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className={`p-3 rounded-full ${social.bgColor} transition-colors duration-200`}>
-                    <social.icon className={`h-6 w-6 ${social.color}`} />
+              {social.badge && (
+                <div className="absolute -top-3 -right-3 z-10">
+                  <div className="bg-gradient-to-r from-accent to-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                    {social.badge}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg group-hover:text-accent transition-colors">
+                </div>
+              )}
+              
+              <CardContent className="p-8">
+                <div className="flex flex-col items-center text-center space-y-6">
+                  {/* Ícone com maior destaque */}
+                  <div className={`relative p-6 rounded-full bg-gradient-to-br ${social.gradient} ${social.hoverGradient} transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-xl`}>
+                    <social.icon className={`h-10 w-10 ${social.iconColor}`} />
+                    <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
+                  
+                  {/* Conteúdo */}
+                  <div className="space-y-3">
+                    <h3 className="font-bold text-xl group-hover:text-accent transition-colors duration-200">
                       {social.name}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground leading-relaxed">
                       {social.description}
                     </p>
                   </div>
-                </div>
-                
-                <Button
-                  asChild
-                  className="w-full group-hover:bg-accent group-hover:text-accent-foreground transition-all duration-200"
-                  variant="outline"
-                >
-                  <a 
-                    href={social.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2"
+                  
+                  {/* CTA melhorado */}
+                  <Button
+                    asChild
+                    size="lg"
+                    className={`w-full bg-gradient-to-r ${social.gradient} ${social.hoverGradient} text-white border-0 shadow-lg group-hover:shadow-xl transition-all duration-300 font-semibold text-base`}
                   >
-                    Acessar
-                    <social.icon className="h-4 w-4" />
-                  </a>
-                </Button>
+                    <a 
+                      href={social.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-3"
+                    >
+                      Acessar Agora
+                      <ExternalLink className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
+                    </a>
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <div className="inline-flex items-center gap-2 px-6 py-3 bg-accent/10 rounded-full">
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-accent-foreground">
-              Atualizações em tempo real nas redes sociais
+        {/* Call to action final */}
+        <div className="text-center">
+          <div className="inline-flex items-center gap-4 px-8 py-4 bg-gradient-to-r from-accent/10 to-accent/20 rounded-2xl border border-accent/30 backdrop-blur-sm">
+            <div className="flex space-x-1">
+              <div className="w-3 h-3 bg-accent rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-accent rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+              <div className="w-3 h-3 bg-accent rounded-full animate-pulse" style={{animationDelay: '0.4s'}}></div>
+            </div>
+            <span className="text-lg font-semibold text-accent-foreground">
+              Atualizações em tempo real • Conteúdo exclusivo • Bastidores da jornada
             </span>
           </div>
         </div>
