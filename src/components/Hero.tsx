@@ -24,7 +24,7 @@ const Hero = () => {
       bgColor: "bg-pink-500/20 hover:bg-pink-500/30",
     },
     {
-      name: "TV Correio",
+      name: "Reportagem na TV",
       icon: Play,
       url: "https://www.instagram.com/reel/C72d7yzpHNB/?igsh=bHYyeDg2MGM0czBo",
       color: "text-road-yellow hover:text-yellow-300",
