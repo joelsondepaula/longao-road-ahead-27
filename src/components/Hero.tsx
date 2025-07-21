@@ -127,14 +127,6 @@ const Hero = () => {
                   animationDelay: `${index * 100}ms`
                 }}
               >
-                {social.featured && (
-                  <div className="absolute -top-2 -right-2 z-10">
-                    <div className="bg-road-yellow text-asphalt-dark text-xs font-bold px-2 py-1 rounded-full">
-                      TV
-                    </div>
-                  </div>
-                )}
-                
                 <social.icon className={`h-5 w-5 ${social.color} transition-colors duration-200`} />
                 <span className="text-road-white font-medium text-sm group-hover:text-road-yellow transition-colors duration-200">
                   {social.name}
