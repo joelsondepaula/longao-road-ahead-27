@@ -1,7 +1,8 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Youtube, Instagram, Music, Activity, Play, ExternalLink } from "lucide-react";
+import { ChevronDown, Youtube, Instagram, Activity, Play, ExternalLink } from "lucide-react";
 import heroImage from "@/assets/hero-road.jpg";
+import tiktokLogo from "@/assets/tiktok-logo.svg";
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -33,7 +34,7 @@ const Hero = () => {
     },
     {
       name: "TikTok",
-      icon: Music,
+      icon: () => <img src={tiktokLogo} alt="TikTok" className="h-5 w-5" />,
       url: "https://www.tiktok.com/@sebastianestevan",
       color: "text-blue-400 hover:text-blue-300",
       bgColor: "bg-blue-500/20 hover:bg-blue-500/30",
