@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
 import About from "@/components/About";
 import Challenge from "@/components/Challenge";
+import SocialMedia from "@/components/SocialMedia";
 import Sponsors from "@/components/Sponsors";
 import Media from "@/components/Media";
 import PressKit from "@/components/PressKit";
@@ -24,6 +25,7 @@ const Index = () => {
         <div id="desafio">
           <Challenge />
         </div>
+        <SocialMedia />
         <Sponsors />
         <Media />
         <PressKit />
