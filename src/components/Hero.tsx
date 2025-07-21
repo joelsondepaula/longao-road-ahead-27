@@ -108,7 +108,7 @@ const Hero = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-black/30 backdrop-blur-sm rounded-full border border-road-white/20">
               <div className="w-2 h-2 bg-road-yellow rounded-full animate-pulse"></div>
               <span className="text-sm font-semibold text-road-white uppercase tracking-wider">
-                Siga a Aventura
+                O Rei do Longão nas Redes
               </span>
             </div>
           </div>
