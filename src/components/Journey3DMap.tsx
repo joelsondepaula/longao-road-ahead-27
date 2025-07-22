@@ -234,7 +234,7 @@ const ModernCanvas = ({ progress }: { progress: number }) => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full rounded-2xl"
+      className="absolute inset-0 w-full h-full rounded-3xl"
       style={{ width: '100%', height: '100%' }}
     />
   );
@@ -294,26 +294,58 @@ const Journey3DMap = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[600px] bg-gradient-to-b from-slate-900 to-black rounded-2xl overflow-hidden shadow-2xl">
+    <div className="relative w-full h-[650px] bg-gradient-to-br from-slate-900 via-slate-800 to-black rounded-3xl overflow-hidden shadow-2xl border border-slate-700/30">
       {/* Canvas animado */}
       <ModernCanvas progress={progress} />
       
-      {/* Overlay com efeito de profundidade */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/30 pointer-events-none rounded-2xl" />
+      {/* Overlay com efeito de profundidade - mais sutil */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/20 pointer-events-none rounded-3xl" />
       
-      {/* Interface moderna */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Estatísticas em tempo real */}
-        <div className="absolute bottom-6 left-6 right-6 z-10 pointer-events-auto">
-          <Card className="p-6 bg-background/95 backdrop-blur-sm border-none shadow-2xl">
-            <div className="flex items-center justify-between mb-4">
+      {/* Interface moderna com melhor spacing */}
+      <div className="absolute inset-0 pointer-events-none p-4">
+        
+        {/* Header com título e status - melhor posicionamento */}
+        <div className="flex justify-between items-start mb-4">
+          <Card className="p-4 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-xl rounded-2xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gradient-to-r from-road-yellow to-premium-gold rounded-xl">
+                <MapPin className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <div className="text-lg font-bold text-road-yellow font-heading">Jornada Épica</div>
+                <div className="text-xs text-muted-foreground">João Pessoa → Cristo Redentor</div>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-3 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-xl rounded-2xl">
+            <div className="flex items-center gap-2">
+              <div className={`w-2.5 h-2.5 rounded-full ${isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+              <span className="text-xs font-medium text-foreground">
+                {isPlaying ? 'Em movimento' : 'Aguardando...'}
+              </span>
+            </div>
+          </Card>
+        </div>
+
+        {/* Estatísticas principais - layout melhorado */}
+        <div className="absolute bottom-4 left-4 right-4 z-10 pointer-events-auto">
+          <Card className="p-6 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-2xl rounded-3xl">
+            
+            {/* Cabeçalho das estatísticas */}
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-gradient-to-r from-road-yellow to-premium-gold rounded-full">
-                  <Bike className="w-8 h-8 text-white" />
+                <div className="relative">
+                  <div className="p-4 bg-gradient-to-r from-road-yellow to-premium-gold rounded-2xl shadow-lg">
+                    <Bike className="w-8 h-8 text-white" />
+                  </div>
+                  {isPlaying && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-pulse border-2 border-white" />
+                  )}
                 </div>
-                <div>
-                  <div className="text-3xl font-bold text-road-yellow">
-                    {currentKm.toLocaleString()} km
+                <div className="space-y-1">
+                  <div className="text-4xl font-bold text-road-yellow font-heading">
+                    {currentKm.toLocaleString()}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     de {totalDistance.toLocaleString()} km total
@@ -321,67 +353,77 @@ const Journey3DMap = () => {
                 </div>
               </div>
               
-              <div className="text-right">
-                <div className="text-2xl font-bold text-foreground">
+              <div className="text-right space-y-1">
+                <div className="text-3xl font-bold text-foreground font-heading">
                   {Math.round(progress * 100)}%
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs text-muted-foreground uppercase tracking-wide">
                   Concluído
                 </div>
               </div>
             </div>
 
-            {/* Barra de progresso moderna */}
-            <div className="w-full bg-muted rounded-full h-3 mb-4 overflow-hidden">
-              <div 
-                className="h-3 rounded-full bg-gradient-to-r from-road-yellow via-premium-gold to-road-yellow transition-all duration-300 relative"
-                style={{ width: `${progress * 100}%` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
+            {/* Barra de progresso aprimorada */}
+            <div className="relative mb-6">
+              <div className="w-full bg-muted/60 rounded-full h-4 overflow-hidden shadow-inner">
+                <div 
+                  className="h-4 rounded-full bg-gradient-to-r from-road-yellow via-premium-gold to-energy-orange transition-all duration-500 ease-out relative"
+                  style={{ width: `${progress * 100}%` }}
+                >
+                  {/* Efeito de brilho na barra */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-pulse" />
+                  
+                  {/* Indicador de posição */}
+                  {progress > 0 && (
+                    <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2">
+                      <div className="w-6 h-6 bg-white rounded-full shadow-lg border-2 border-road-yellow flex items-center justify-center">
+                        <div className="w-2 h-2 bg-road-yellow rounded-full animate-pulse" />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Labels da barra de progresso */}
+              <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                <span>João Pessoa</span>
+                <span className="font-medium text-road-yellow">
+                  {currentKm} km
+                </span>
+                <span>Rio de Janeiro</span>
               </div>
             </div>
 
-            {/* Estatísticas especiais */}
+            {/* Estatísticas especiais - layout melhorado */}
             {currentKm >= recordDistance && (
-              <div className="flex items-center justify-center gap-8 animate-fade-in">
-                <div className="flex items-center gap-2 text-sm bg-premium-gold/10 px-4 py-2 rounded-full border border-premium-gold/20">
-                  <Trophy className="w-4 h-4 text-premium-gold" />
-                  <span className="text-premium-gold font-semibold">{recordDistance} km em {recordTime}</span>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
+                <div className="flex items-center gap-3 bg-gradient-to-r from-premium-gold/10 to-premium-gold/5 px-6 py-3 rounded-2xl border border-premium-gold/20 shadow-lg backdrop-blur-sm">
+                  <div className="p-2 bg-premium-gold/20 rounded-xl">
+                    <Trophy className="w-5 h-5 text-premium-gold" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-premium-gold">Recorde Histórico</div>
+                    <div className="text-xs text-premium-gold/80">{recordDistance} km em {recordTime}</div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-sm bg-road-yellow/10 px-4 py-2 rounded-full border border-road-yellow/20">
-                  <Clock className="w-4 h-4 text-road-yellow" />
-                  <span className="text-road-yellow font-semibold">Pedalada contínua</span>
+                
+                <div className="flex items-center gap-3 bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 px-6 py-3 rounded-2xl border border-emerald-500/20 shadow-lg backdrop-blur-sm">
+                  <div className="p-2 bg-emerald-500/20 rounded-xl">
+                    <Clock className="w-5 h-5 text-emerald-500" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-emerald-500">Pedalada Contínua</div>
+                    <div className="text-xs text-emerald-500/80">Sem paradas</div>
+                  </div>
                 </div>
               </div>
             )}
           </Card>
         </div>
-
-        {/* Título */}
-        <div className="absolute top-6 left-6 z-10">
-          <Card className="p-4 bg-background/95 backdrop-blur-sm border-none shadow-lg">
-            <div className="flex items-center gap-3">
-              <MapPin className="w-6 h-6 text-road-yellow" />
-              <div>
-                <div className="text-lg font-bold text-road-yellow">Jornada Interativa</div>
-                <div className="text-sm text-muted-foreground">João Pessoa → Cristo Redentor</div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Status */}
-        <div className="absolute top-6 right-6 z-10">
-          <Card className="p-3 bg-background/95 backdrop-blur-sm border-none shadow-lg">
-            <div className="flex items-center gap-2">
-              <div className={`w-3 h-3 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'}`} />
-              <span className="text-sm font-medium">
-                {isPlaying ? 'Em movimento' : 'Preparando...'}
-              </span>
-            </div>
-          </Card>
-        </div>
       </div>
+      
+      {/* Efeito de borda interna sutil */}
+      <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10 pointer-events-none" />
     </div>
   );
 };
