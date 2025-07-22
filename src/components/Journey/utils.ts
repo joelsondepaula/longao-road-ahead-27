@@ -34,16 +34,16 @@ export const drawBackground = (
   width: number, 
   height: number
 ): void => {
-  // Gradiente de fundo
+  // Gradiente de fundo usando cores HSL adequadas
   const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, '#0f172a');
-  gradient.addColorStop(0.5, '#1e293b');
-  gradient.addColorStop(1, '#334155');
+  gradient.addColorStop(0, 'hsl(222, 84%, 5%)');
+  gradient.addColorStop(0.5, 'hsl(217, 33%, 18%)');
+  gradient.addColorStop(1, 'hsl(215, 20%, 25%)');
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
 
-  // Grade sutil
-  ctx.strokeStyle = 'rgba(71, 85, 105, 0.15)';
+  // Grade mais sutil
+  ctx.strokeStyle = 'hsla(217, 32%, 18%, 0.2)';
   ctx.lineWidth = 1;
   
   // Linhas horizontais

@@ -24,8 +24,8 @@ const Canvas: React.FC<CanvasProps> = ({ progress, currentKm, totalDistance, isP
     };
 
     const drawRoute = (width: number, height: number) => {
-      // Rota base
-      ctx.strokeStyle = COLORS.route.base;
+      // Rota base com cor do design system
+      ctx.strokeStyle = 'hsla(45, 100%, 50%, 0.5)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       
@@ -45,9 +45,9 @@ const Canvas: React.FC<CanvasProps> = ({ progress, currentKm, totalDistance, isP
     const drawProgress = (width: number, height: number) => {
       if (progress <= 0) return;
 
-      ctx.strokeStyle = COLORS.route.progress;
+      ctx.strokeStyle = 'hsl(0, 84%, 60%)';
       ctx.lineWidth = 4;
-      ctx.shadowColor = COLORS.route.progressShadow;
+      ctx.shadowColor = 'hsla(0, 84%, 60%, 0.6)';
       ctx.shadowBlur = 8;
       ctx.beginPath();
       
@@ -93,12 +93,12 @@ const Canvas: React.FC<CanvasProps> = ({ progress, currentKm, totalDistance, isP
         const isStart = index === 0;
         const isEnd = index === ROUTE_COORDINATES.length - 1;
         
-        // Círculo da cidade
+        // Círculo da cidade com cores do design system
         ctx.fillStyle = isStart 
-          ? COLORS.cities.start 
+          ? 'hsl(142, 76%, 36%)' // success-green
           : isEnd 
-            ? COLORS.cities.end 
-            : COLORS.cities.intermediate;
+            ? 'hsl(45, 85%, 47%)' // premium-gold
+            : 'hsl(215, 20%, 65%)'; // muted color
         
         ctx.shadowColor = ctx.fillStyle;
         ctx.shadowBlur = 4;
@@ -108,10 +108,10 @@ const Canvas: React.FC<CanvasProps> = ({ progress, currentKm, totalDistance, isP
         ctx.shadowBlur = 0;
         
         // Nome da cidade
-        ctx.fillStyle = COLORS.text.primary;
+        ctx.fillStyle = 'hsl(210, 40%, 98%)';
         ctx.font = 'bold 10px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'center';
-        ctx.shadowColor = '#000000';
+        ctx.shadowColor = 'hsl(222, 84%, 5%)';
         ctx.shadowBlur = 2;
         ctx.fillText(city.name, x, y - 10);
         ctx.shadowBlur = 0;
@@ -128,15 +128,15 @@ const Canvas: React.FC<CanvasProps> = ({ progress, currentKm, totalDistance, isP
       // Pulso animado
       const time = Date.now() * 0.003;
       const pulseRadius = 12 + Math.sin(time) * 3;
-      ctx.strokeStyle = COLORS.cyclist.pulse;
+      ctx.strokeStyle = 'hsla(0, 84%, 60%, 0.3)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
       ctx.stroke();
       
       // Ciclista
-      ctx.fillStyle = COLORS.cyclist.main;
-      ctx.shadowColor = COLORS.cyclist.main;
+      ctx.fillStyle = 'hsl(0, 84%, 60%)';
+      ctx.shadowColor = 'hsl(0, 84%, 60%)';
       ctx.shadowBlur = 8;
       ctx.beginPath();
       ctx.arc(x, y, 6, 0, 2 * Math.PI);

@@ -10,33 +10,33 @@ export const ROUTE_COORDINATES: RoutePoint[] = [
 
 export const COLORS = {
   background: {
-    start: '#0f172a',
-    middle: '#1e293b', 
-    end: '#334155'
+    start: 'hsl(222.2, 84%, 4.9%)',
+    middle: 'hsl(217.2, 32.6%, 17.5%)', 
+    end: 'hsl(215, 20.2%, 25%)'
   },
-  grid: 'rgba(71, 85, 105, 0.15)',
+  grid: 'hsla(217, 32%, 18%, 0.3)',
   route: {
-    base: 'rgba(251, 191, 36, 0.4)',
-    progress: '#ef4444',
-    progressShadow: 'rgba(239, 68, 68, 0.6)'
+    base: 'hsla(45, 100%, 50%, 0.4)',
+    progress: 'hsl(0, 84%, 60%)',
+    progressShadow: 'hsla(0, 84%, 60%, 0.6)'
   },
   cities: {
-    start: '#22c55e',
-    end: '#f59e0b',
-    intermediate: '#64748b'
+    start: 'hsl(142, 76%, 36%)',
+    end: 'hsl(45, 85%, 47%)',
+    intermediate: 'hsl(215, 20%, 65%)'
   },
   cyclist: {
-    main: '#ef4444',
-    pulse: 'rgba(239, 68, 68, 0.2)'
+    main: 'hsl(0, 84%, 60%)',
+    pulse: 'hsla(0, 84%, 60%, 0.3)'
   },
   text: {
-    primary: '#ffffff',
-    secondary: 'rgba(255, 255, 255, 0.8)',
-    accent: '#f59e0b'
+    primary: 'hsl(210, 40%, 98%)',
+    secondary: 'hsla(210, 40%, 98%, 0.8)',
+    accent: 'hsl(45, 85%, 47%)'
   },
   info: {
-    background: 'rgba(15, 23, 42, 0.8)',
-    border: 'rgba(245, 158, 11, 0.3)'
+    background: 'hsla(222, 84%, 5%, 0.9)',
+    border: 'hsla(45, 85%, 47%, 0.3)'
   }
 };
 
