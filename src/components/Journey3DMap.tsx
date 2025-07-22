@@ -1,183 +1,201 @@
 import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play, Pause, RotateCcw, MapPin, Trophy, Clock } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Play, Pause, RotateCcw, MapPin, Trophy, Clock, Bike } from 'lucide-react';
 
 const Journey3DMap = () => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentKm, setCurrentKm] = useState(0);
-  const [mapboxToken, setMapboxToken] = useState('');
-  const [tokenSet, setTokenSet] = useState(false);
   const animationRef = useRef<number>();
 
-  // Coordenadas da jornada: João Pessoa (-7.1195, -34.8450) até Cristo Redentor (-22.9519, -43.2105)
-  const startPoint = [-34.8450, -7.1195]; // João Pessoa
-  const endPoint = [-43.2105, -22.9519]; // Cristo Redentor
   const totalDistance = 2530; // km
   const recordDistance = 500;
   const recordTime = "24h36min";
 
-  // Gerar pontos intermediários da rota
-  const generateRoutePoints = () => {
-    const points = [];
-    const numPoints = 50;
+  // Coordenadas da jornada (simplificadas para animação)
+  const routePoints = [
+    { x: 0.1, y: 0.2, name: "João Pessoa", km: 0 },
+    { x: 0.15, y: 0.3, name: "Recife", km: 120 },
+    { x: 0.2, y: 0.4, name: "Salvador", km: 512 },
+    { x: 0.3, y: 0.5, name: "Vitória", km: 1200 },
+    { x: 0.5, y: 0.7, name: "Rio de Janeiro", km: 2530 }
+  ];
+
+  const drawRoute = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Limpar canvas
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, width, height);
+
+    // Criar gradiente de fundo (simulando terreno)
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#1e293b');
+    gradient.addColorStop(0.5, '#334155');
+    gradient.addColorStop(1, '#475569');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    // Desenhar linhas de grade (simulando elevação)
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.3;
     
-    for (let i = 0; i <= numPoints; i++) {
-      const ratio = i / numPoints;
-      const lng = startPoint[0] + (endPoint[0] - startPoint[0]) * ratio;
-      const lat = startPoint[1] + (endPoint[1] - startPoint[1]) * ratio;
-      points.push([lng, lat]);
+    for (let i = 0; i < 10; i++) {
+      const y = (height / 10) * i;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
     }
     
-    return points;
+    for (let i = 0; i < 10; i++) {
+      const x = (width / 10) * i;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, height);
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = 1;
+
+    // Desenhar rota base
+    ctx.strokeStyle = '#fbbf24';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    
+    routePoints.forEach((point, index) => {
+      const x = point.x * width;
+      const y = point.y * height;
+      
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+
+    // Desenhar progresso da rota
+    if (progress > 0) {
+      ctx.strokeStyle = '#ef4444';
+      ctx.lineWidth = 6;
+      ctx.shadowColor = '#ef4444';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      
+      let totalLength = 0;
+      const segmentLengths: number[] = [];
+      
+      // Calcular comprimentos dos segmentos
+      for (let i = 0; i < routePoints.length - 1; i++) {
+        const dx = (routePoints[i + 1].x - routePoints[i].x) * width;
+        const dy = (routePoints[i + 1].y - routePoints[i].y) * height;
+        const length = Math.sqrt(dx * dx + dy * dy);
+        segmentLengths.push(length);
+        totalLength += length;
+      }
+      
+      const targetLength = totalLength * progress;
+      let currentLength = 0;
+      
+      ctx.moveTo(routePoints[0].x * width, routePoints[0].y * height);
+      
+      for (let i = 0; i < segmentLengths.length; i++) {
+        if (currentLength + segmentLengths[i] <= targetLength) {
+          // Segmento completo
+          ctx.lineTo(routePoints[i + 1].x * width, routePoints[i + 1].y * height);
+          currentLength += segmentLengths[i];
+        } else {
+          // Segmento parcial
+          const ratio = (targetLength - currentLength) / segmentLengths[i];
+          const x = routePoints[i].x + (routePoints[i + 1].x - routePoints[i].x) * ratio;
+          const y = routePoints[i].y + (routePoints[i + 1].y - routePoints[i].y) * ratio;
+          ctx.lineTo(x * width, y * height);
+          break;
+        }
+      }
+      
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    // Desenhar pontos de referência
+    routePoints.forEach((point, index) => {
+      const x = point.x * width;
+      const y = point.y * height;
+      
+      // Círculo do ponto
+      ctx.fillStyle = index === 0 ? '#22c55e' : index === routePoints.length - 1 ? '#fbbf24' : '#64748b';
+      ctx.beginPath();
+      ctx.arc(x, y, 8, 0, 2 * Math.PI);
+      ctx.fill();
+      
+      // Borda branca
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      // Nome da cidade
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(point.name, x, y - 15);
+    });
+
+    // Desenhar ciclista em movimento
+    if (progress > 0) {
+      const currentPoint = getCurrentPosition();
+      const x = currentPoint.x * width;
+      const y = currentPoint.y * height;
+      
+      // Efeito de brilho para o ciclista
+      ctx.fillStyle = '#ef4444';
+      ctx.shadowColor = '#ef4444';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.arc(x, y, 6, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // Animação de pulso
+      const pulseRadius = 15 + Math.sin(Date.now() * 0.01) * 5;
+      ctx.strokeStyle = '#ef444440';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
+      ctx.stroke();
+    }
   };
 
-  const routePoints = generateRoutePoints();
-
-  const initializeMap = () => {
-    if (!mapContainer.current || !mapboxToken.trim()) return;
-
-    mapboxgl.accessToken = mapboxToken.trim();
+  const getCurrentPosition = () => {
+    if (progress === 0) return routePoints[0];
+    if (progress === 1) return routePoints[routePoints.length - 1];
     
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12',
-      center: [-39, -15], // Centro do Brasil
-      zoom: 5,
-      pitch: 60,
-      bearing: -10,
-      antialias: true,
-      projection: 'globe'
-    });
-
-    map.current.on('load', () => {
-      if (!map.current) return;
-
-      // Adicionar terreno 3D
-      map.current.addSource('mapbox-dem', {
-        type: 'raster-dem',
-        url: 'mapbox://mapbox.terrain-rgb',
-        tileSize: 512,
-        maxzoom: 14
-      });
-
-      map.current.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
-
-      // Adicionar linha da rota
-      map.current.addSource('route', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'LineString',
-            coordinates: routePoints
-          }
-        }
-      });
-
-      map.current.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'route',
-        layout: {
-          'line-join': 'round',
-          'line-cap': 'round'
-        },
-        paint: {
-          'line-color': '#FFD700',
-          'line-width': 4,
-          'line-opacity': 0.8
-        }
-      });
-
-      // Adicionar marcadores de início e fim
-      map.current.addSource('start-point', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: { title: 'João Pessoa' },
-          geometry: {
-            type: 'Point',
-            coordinates: startPoint
-          }
-        }
-      });
-
-      map.current.addLayer({
-        id: 'start-point',
-        type: 'circle',
-        source: 'start-point',
-        paint: {
-          'circle-color': '#22c55e',
-          'circle-radius': 8,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#ffffff'
-        }
-      });
-
-      map.current.addSource('end-point', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: { title: 'Cristo Redentor' },
-          geometry: {
-            type: 'Point',
-            coordinates: endPoint
-          }
-        }
-      });
-
-      map.current.addLayer({
-        id: 'end-point',
-        type: 'circle',
-        source: 'end-point',
-        paint: {
-          'circle-color': '#FFD700',
-          'circle-radius': 8,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#ffffff'
-        }
-      });
-
-      // Adicionar marcador do ciclista (inicialmente invisível)
-      map.current.addSource('cyclist', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Point',
-            coordinates: startPoint
-          }
-        }
-      });
-
-      map.current.addLayer({
-        id: 'cyclist',
-        type: 'circle',
-        source: 'cyclist',
-        paint: {
-          'circle-color': '#ef4444',
-          'circle-radius': 6,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#ffffff',
-          'circle-opacity': 0
-        }
-      });
-    });
+    const totalSegments = routePoints.length - 1;
+    const segmentProgress = progress * totalSegments;
+    const currentSegment = Math.floor(segmentProgress);
+    const segmentRatio = segmentProgress - currentSegment;
+    
+    if (currentSegment >= routePoints.length - 1) {
+      return routePoints[routePoints.length - 1];
+    }
+    
+    const start = routePoints[currentSegment];
+    const end = routePoints[currentSegment + 1];
+    
+    return {
+      x: start.x + (end.x - start.x) * segmentRatio,
+      y: start.y + (end.y - start.y) * segmentRatio,
+      name: '',
+      km: 0
+    };
   };
 
   const startAnimation = () => {
-    if (!map.current) return;
-    
     setIsPlaying(true);
     const startTime = Date.now();
     const duration = 8000; // 8 segundos
@@ -190,36 +208,6 @@ const Journey3DMap = () => {
       setCurrentKm(Math.floor(totalDistance * animationProgress));
 
       if (animationProgress < 1) {
-        // Interpolar posição do ciclista
-        const pointIndex = Math.floor(animationProgress * (routePoints.length - 1));
-        const currentPoint = routePoints[pointIndex];
-        
-        if (map.current && currentPoint) {
-          // Atualizar posição do ciclista
-          const source = map.current.getSource('cyclist') as mapboxgl.GeoJSONSource;
-          if (source) {
-            source.setData({
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'Point',
-                coordinates: currentPoint
-              }
-            });
-
-            // Tornar o ciclista visível
-            map.current.setPaintProperty('cyclist', 'circle-opacity', 1);
-          }
-
-          // Seguir o ciclista com a câmera
-          map.current.easeTo({
-            center: currentPoint as [number, number],
-            zoom: 6 + animationProgress * 2,
-            duration: 100,
-            essential: true
-          });
-        }
-
         animationRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
@@ -240,88 +228,51 @@ const Journey3DMap = () => {
     pauseAnimation();
     setProgress(0);
     setCurrentKm(0);
-    
-    if (map.current) {
-      // Resetar posição do ciclista
-      const source = map.current.getSource('cyclist') as mapboxgl.GeoJSONSource;
-      if (source) {
-        source.setData({
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Point',
-            coordinates: startPoint
-          }
-        });
-        map.current.setPaintProperty('cyclist', 'circle-opacity', 0);
-      }
-
-      // Resetar câmera
-      map.current.easeTo({
-        center: [-39, -15],
-        zoom: 5,
-        pitch: 60,
-        bearing: -10,
-        duration: 1000
-      });
-    }
-  };
-
-  const handleTokenSubmit = () => {
-    if (mapboxToken.trim()) {
-      setTokenSet(true);
-      initializeMap();
-    }
   };
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Ajustar tamanho do canvas
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Loop de renderização
+    const render = () => {
+      drawRoute(ctx, canvas);
+      requestAnimationFrame(render);
+    };
+    render();
+
     return () => {
+      window.removeEventListener('resize', resizeCanvas);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      if (map.current) {
-        map.current.remove();
-      }
     };
-  }, []);
-
-  if (!tokenSet) {
-    return (
-      <div className="relative w-full h-[600px] bg-muted rounded-2xl flex items-center justify-center">
-        <Card className="p-8 max-w-md mx-auto">
-          <div className="text-center mb-6">
-            <MapPin className="w-12 h-12 text-road-yellow mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">Mapa 3D da Jornada</h3>
-            <p className="text-muted-foreground text-sm">
-              Para visualizar o mapa 3D, você precisa inserir seu token público do Mapbox.
-              Acesse <a href="https://mapbox.com/" target="_blank" rel="noopener noreferrer" className="text-road-yellow hover:underline">mapbox.com</a> para obter seu token.
-            </p>
-          </div>
-          
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="mapbox-token">Token Público Mapbox</Label>
-              <Input
-                id="mapbox-token"
-                type="password"
-                placeholder="pk.eyJ1IjoiZXhhbXBsZSI..."
-                value={mapboxToken}
-                onChange={(e) => setMapboxToken(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            <Button onClick={handleTokenSubmit} className="w-full" disabled={!mapboxToken.trim()}>
-              Carregar Mapa 3D
-            </Button>
-          </div>
-        </Card>
-      </div>
-    );
-  }
+  }, [progress]);
 
   return (
-    <div className="relative w-full h-[600px] bg-muted rounded-2xl overflow-hidden">
-      <div ref={mapContainer} className="absolute inset-0" />
+    <div className="relative w-full h-[600px] bg-slate-900 rounded-2xl overflow-hidden">
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full"
+        style={{ width: '100%', height: '100%' }}
+      />
+      
+      {/* Overlay 3D effect */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/20 pointer-events-none" />
       
       {/* Controles de reprodução */}
       <div className="absolute bottom-6 left-6 right-6 z-10">
@@ -340,12 +291,15 @@ const Journey3DMap = () => {
               </Button>
             </div>
             
-            <div className="text-right">
-              <div className="text-2xl font-bold text-road-yellow">
-                {currentKm.toLocaleString()} km
-              </div>
-              <div className="text-sm text-muted-foreground">
-                de {totalDistance.toLocaleString()} km
+            <div className="flex items-center gap-3">
+              <Bike className="w-6 h-6 text-road-yellow" />
+              <div className="text-right">
+                <div className="text-2xl font-bold text-road-yellow">
+                  {currentKm.toLocaleString()} km
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  de {totalDistance.toLocaleString()} km
+                </div>
               </div>
             </div>
           </div>
@@ -387,9 +341,19 @@ const Journey3DMap = () => {
               <span>Cristo Redentor</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
               <span>O Rei do Longão</span>
             </div>
+          </div>
+        </Card>
+      </div>
+
+      {/* Título da animação */}
+      <div className="absolute top-6 right-6 z-10">
+        <Card className="p-3 bg-background/90 backdrop-blur-sm">
+          <div className="text-sm font-semibold text-center">
+            <div className="text-road-yellow">Flyover 3D</div>
+            <div className="text-xs text-muted-foreground">João Pessoa → Rio</div>
           </div>
         </Card>
       </div>
