@@ -198,7 +198,7 @@ const Journey3DMap = () => {
   const startAnimation = () => {
     setIsPlaying(true);
     const startTime = Date.now();
-    const duration = 8000; // 8 segundos
+    const duration = 12000; // 12 segundos para ver melhor a animação
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -211,23 +211,18 @@ const Journey3DMap = () => {
         animationRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
+        // Reiniciar automaticamente após 2 segundos
+        setTimeout(() => {
+          setProgress(0);
+          setCurrentKm(0);
+          setTimeout(() => {
+            startAnimation();
+          }, 1000);
+        }, 2000);
       }
     };
 
     animationRef.current = requestAnimationFrame(animate);
-  };
-
-  const pauseAnimation = () => {
-    setIsPlaying(false);
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-  };
-
-  const resetAnimation = () => {
-    pauseAnimation();
-    setProgress(0);
-    setCurrentKm(0);
   };
 
   useEffect(() => {
@@ -269,20 +264,6 @@ const Journey3DMap = () => {
     };
   }, []);
 
-  // Reiniciar animação quando terminar
-  useEffect(() => {
-    if (progress === 1 && !isPlaying) {
-      const timer = setTimeout(() => {
-        resetAnimation();
-        setTimeout(() => {
-          startAnimation();
-        }, 2000);
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [progress, isPlaying]);
-
   return (
     <div className="relative w-full h-[600px] bg-slate-900 rounded-2xl overflow-hidden">
       <canvas 
@@ -294,32 +275,29 @@ const Journey3DMap = () => {
       {/* Overlay 3D effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/20 pointer-events-none" />
       
-      {/* Controles de reprodução */}
+      {/* Estatísticas em tempo real - apenas visualização */}
       <div className="absolute bottom-6 left-6 right-6 z-10">
         <Card className="p-4 bg-background/90 backdrop-blur-sm">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex gap-2">
-              <Button
-                size="sm"
-                onClick={isPlaying ? pauseAnimation : startAnimation}
-                className="bg-road-yellow text-asphalt-dark hover:bg-road-yellow/90"
-              >
-                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-              </Button>
-              <Button size="sm" variant="outline" onClick={resetAnimation}>
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-            </div>
-            
             <div className="flex items-center gap-3">
               <Bike className="w-6 h-6 text-road-yellow" />
-              <div className="text-right">
+              <div className="text-left">
                 <div className="text-2xl font-bold text-road-yellow">
                   {currentKm.toLocaleString()} km
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  de {totalDistance.toLocaleString()} km
+                  de {totalDistance.toLocaleString()} km total
                 </div>
+              </div>
+            </div>
+            
+            {/* Progresso visual */}
+            <div className="text-right">
+              <div className="text-lg font-semibold text-foreground">
+                {Math.round(progress * 100)}%
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Concluído
               </div>
             </div>
           </div>
@@ -332,8 +310,8 @@ const Journey3DMap = () => {
             />
           </div>
 
-          {/* Estatísticas */}
-          {progress > 0.7 && (
+          {/* Estatísticas especiais - aparecem quando passa dos 500km */}
+          {currentKm >= recordDistance && (
             <div className="flex items-center justify-center gap-6 animate-fade-in">
               <div className="flex items-center gap-2 text-sm">
                 <Trophy className="w-4 h-4 text-premium-gold" />
