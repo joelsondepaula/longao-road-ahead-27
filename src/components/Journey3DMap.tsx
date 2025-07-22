@@ -1,234 +1,247 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useRef, useEffect, useState } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { PerspectiveCamera, Text, Line, Sphere } from '@react-three/drei';
 import { Card } from '@/components/ui/card';
-import { Play, Pause, RotateCcw, MapPin, Trophy, Clock, Bike } from 'lucide-react';
+import { Bike, MapPin, Trophy, Clock } from 'lucide-react';
+import * as THREE from 'three';
+
+// Coordenadas reais das cidades (latitude, longitude)
+const routeCoordinates = [
+  { name: "João Pessoa", lat: -7.1195, lng: -34.8450, km: 0 },
+  { name: "Recife", lat: -8.0476, lng: -34.8770, km: 120 },
+  { name: "Salvador", lat: -12.9714, lng: -38.5014, km: 512 },
+  { name: "Vitória", lat: -20.3155, lng: -40.3128, km: 1200 },
+  { name: "Rio de Janeiro", lat: -22.9068, lng: -43.1729, km: 2530 }
+];
+
+// Converter coordenadas geográficas para posições 3D
+const convertToPosition = (lat: number, lng: number): [number, number, number] => {
+  const radius = 5;
+  const phi = (90 - lat) * (Math.PI / 180);
+  const theta = (lng + 180) * (Math.PI / 180);
+  
+  const x = radius * Math.sin(phi) * Math.cos(theta);
+  const y = radius * Math.cos(phi);
+  const z = radius * Math.sin(phi) * Math.sin(theta);
+  
+  return [x, y, z];
+};
+
+// Componente da Terra com textura
+const Earth = () => {
+  const earthRef = useRef<THREE.Mesh>(null);
+  
+  useFrame(() => {
+    if (earthRef.current) {
+      earthRef.current.rotation.y += 0.001;
+    }
+  });
+
+  return (
+    <mesh ref={earthRef}>
+      <sphereGeometry args={[5, 64, 64]} />
+      <meshStandardMaterial
+        color="#2563eb"
+        roughness={0.8}
+        metalness={0.1}
+      />
+      {/* Continentes simplificados */}
+      <mesh>
+        <sphereGeometry args={[5.01, 32, 32]} />
+        <meshBasicMaterial 
+          color="#22c55e" 
+          transparent 
+          opacity={0.3}
+          wireframe
+        />
+      </mesh>
+    </mesh>
+  );
+};
+
+// Componente da rota
+const Route = ({ progress }: { progress: number }) => {
+  const positions = routeCoordinates.map(coord => convertToPosition(coord.lat, coord.lng));
+  
+  // Criar curva suave entre os pontos
+  const curve = new THREE.CatmullRomCurve3(
+    positions.map(pos => new THREE.Vector3(...pos))
+  );
+  
+  const points = curve.getPoints(100);
+  
+  return (
+    <>
+      {/* Linha da rota */}
+      <Line
+        points={points}
+        color="#fbbf24"
+        lineWidth={3}
+        transparent
+        opacity={0.8}
+      />
+      
+      {/* Parte percorrida */}
+      {progress > 0 && (
+        <Line
+          points={points.slice(0, Math.floor(points.length * progress))}
+          color="#ef4444"
+          lineWidth={5}
+          transparent
+          opacity={1}
+        />
+      )}
+    </>
+  );
+};
+
+// Componente do ciclista
+const Cyclist = ({ progress }: { progress: number }) => {
+  const cyclistRef = useRef<THREE.Group>(null);
+  const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
+  
+  useEffect(() => {
+    const positions = routeCoordinates.map(coord => convertToPosition(coord.lat, coord.lng));
+    const curve = new THREE.CatmullRomCurve3(
+      positions.map(pos => new THREE.Vector3(...pos))
+    );
+    
+    const point = curve.getPoint(progress);
+    setPosition([point.x, point.y, point.z]);
+  }, [progress]);
+
+  useFrame((state) => {
+    if (cyclistRef.current) {
+      const time = state.clock.getElapsedTime();
+      cyclistRef.current.position.y += Math.sin(time * 10) * 0.02;
+    }
+  });
+
+  if (progress === 0) return null;
+
+  return (
+    <group ref={cyclistRef} position={position}>
+      {/* Ciclista principal */}
+      <Sphere args={[0.1]} position={[0, 0, 0]}>
+        <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={0.5} />
+      </Sphere>
+      
+      {/* Efeito de brilho */}
+      <Sphere args={[0.15]} position={[0, 0, 0]}>
+        <meshBasicMaterial color="#ef4444" transparent opacity={0.3} />
+      </Sphere>
+      
+      {/* Rastro */}
+      <Sphere args={[0.2]} position={[0, 0, 0]}>
+        <meshBasicMaterial color="#fbbf24" transparent opacity={0.1} />
+      </Sphere>
+    </group>
+  );
+};
+
+// Componente das cidades
+const Cities = () => {
+  return (
+    <>
+      {routeCoordinates.map((city, index) => {
+        const position = convertToPosition(city.lat, city.lng);
+        const isStart = index === 0;
+        const isEnd = index === routeCoordinates.length - 1;
+        
+        return (
+          <group key={city.name} position={position}>
+            <Sphere args={[0.05]}>
+              <meshStandardMaterial 
+                color={isStart ? "#22c55e" : isEnd ? "#fbbf24" : "#64748b"} 
+                emissive={isStart ? "#22c55e" : isEnd ? "#fbbf24" : "#64748b"}
+                emissiveIntensity={0.3}
+              />
+            </Sphere>
+            <Text
+              position={[0, 0.3, 0]}
+              fontSize={0.15}
+              color="white"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {city.name}
+            </Text>
+          </group>
+        );
+      })}
+    </>
+  );
+};
+
+// Componente principal da cena 3D
+const Scene3D = ({ progress }: { progress: number }) => {
+  return (
+    <Canvas style={{ width: '100%', height: '100%', background: 'radial-gradient(circle, #1e1b4b 0%, #0f0a19 100%)' }}>
+      <PerspectiveCamera makeDefault position={[12, 8, 12]} fov={50} />
+      
+      {/* Iluminação */}
+      <ambientLight intensity={0.3} />
+      <directionalLight position={[10, 10, 5]} intensity={1} />
+      <pointLight position={[-10, -10, -5]} intensity={0.5} />
+      
+      {/* Cena */}
+      <Earth />
+      <Route progress={progress} />
+      <Cyclist progress={progress} />
+      <Cities />
+      
+      {/* Estrelas */}
+      <Stars />
+    </Canvas>
+  );
+};
+
+// Componente das estrelas
+const Stars = () => {
+  const starsRef = useRef<THREE.Points>(null);
+  
+  useFrame(() => {
+    if (starsRef.current) {
+      starsRef.current.rotation.y += 0.0005;
+    }
+  });
+  
+  const starPositions = new Float32Array(1000 * 3);
+  for (let i = 0; i < 1000; i++) {
+    starPositions[i * 3] = (Math.random() - 0.5) * 100;
+    starPositions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+    starPositions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+  }
+  
+  return (
+    <points ref={starsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={1000}
+          array={starPositions}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial color="white" size={0.5} />
+    </points>
+  );
+};
 
 const Journey3DMap = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentKm, setCurrentKm] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
   const animationRef = useRef<number>();
 
-  const totalDistance = 2530; // km
+  const totalDistance = 2530;
   const recordDistance = 500;
   const recordTime = "24h36min";
-
-  // Coordenadas da jornada (simplificadas para animação)
-  const routePoints = [
-    { x: 0.1, y: 0.2, name: "João Pessoa", km: 0 },
-    { x: 0.15, y: 0.3, name: "Recife", km: 120 },
-    { x: 0.2, y: 0.4, name: "Salvador", km: 512 },
-    { x: 0.3, y: 0.5, name: "Vitória", km: 1200 },
-    { x: 0.5, y: 0.7, name: "Rio de Janeiro", km: 2530 }
-  ];
-
-  const drawRoute = (ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
-    const width = canvas.width;
-    const height = canvas.height;
-
-    // Limpar canvas
-    ctx.fillStyle = '#0f172a';
-    ctx.fillRect(0, 0, width, height);
-
-    // Criar gradiente de fundo (simulando terreno)
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#1e293b');
-    gradient.addColorStop(0.5, '#334155');
-    gradient.addColorStop(1, '#475569');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-
-    // Desenhar linhas de grade (simulando elevação)
-    ctx.strokeStyle = '#64748b';
-    ctx.lineWidth = 1;
-    ctx.globalAlpha = 0.3;
-    
-    for (let i = 0; i < 10; i++) {
-      const y = (height / 10) * i;
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
-    
-    for (let i = 0; i < 10; i++) {
-      const x = (width / 10) * i;
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-
-    ctx.globalAlpha = 1;
-
-    // Desenhar rota base
-    ctx.strokeStyle = '#fbbf24';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    
-    routePoints.forEach((point, index) => {
-      const x = point.x * width;
-      const y = point.y * height;
-      
-      if (index === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-    });
-    ctx.stroke();
-
-    // Desenhar progresso da rota
-    if (progress > 0) {
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 6;
-      ctx.shadowColor = '#ef4444';
-      ctx.shadowBlur = 10;
-      ctx.beginPath();
-      
-      let totalLength = 0;
-      const segmentLengths: number[] = [];
-      
-      // Calcular comprimentos dos segmentos
-      for (let i = 0; i < routePoints.length - 1; i++) {
-        const dx = (routePoints[i + 1].x - routePoints[i].x) * width;
-        const dy = (routePoints[i + 1].y - routePoints[i].y) * height;
-        const length = Math.sqrt(dx * dx + dy * dy);
-        segmentLengths.push(length);
-        totalLength += length;
-      }
-      
-      const targetLength = totalLength * progress;
-      let currentLength = 0;
-      
-      ctx.moveTo(routePoints[0].x * width, routePoints[0].y * height);
-      
-      for (let i = 0; i < segmentLengths.length; i++) {
-        if (currentLength + segmentLengths[i] <= targetLength) {
-          // Segmento completo
-          ctx.lineTo(routePoints[i + 1].x * width, routePoints[i + 1].y * height);
-          currentLength += segmentLengths[i];
-        } else {
-          // Segmento parcial
-          const ratio = (targetLength - currentLength) / segmentLengths[i];
-          const x = routePoints[i].x + (routePoints[i + 1].x - routePoints[i].x) * ratio;
-          const y = routePoints[i].y + (routePoints[i + 1].y - routePoints[i].y) * ratio;
-          ctx.lineTo(x * width, y * height);
-          break;
-        }
-      }
-      
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-    }
-
-    // Desenhar pontos de referência
-    routePoints.forEach((point, index) => {
-      const x = point.x * width;
-      const y = point.y * height;
-      
-      // Círculo do ponto
-      ctx.fillStyle = index === 0 ? '#22c55e' : index === routePoints.length - 1 ? '#fbbf24' : '#64748b';
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, 2 * Math.PI);
-      ctx.fill();
-      
-      // Borda branca
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      
-      // Nome da cidade
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '12px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(point.name, x, y - 15);
-    });
-
-    // Desenhar ciclista em movimento no centro da tela
-    if (progress > 0) {
-      const currentPoint = getCurrentPosition();
-      const x = currentPoint.x * width;
-      const y = currentPoint.y * height;
-      
-      // Ciclista principal com efeito brilhante
-      ctx.fillStyle = '#ef4444';
-      ctx.shadowColor = '#ef4444';
-      ctx.shadowBlur = 20;
-      ctx.beginPath();
-      ctx.arc(x, y, 8, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      
-      // Rastro do ciclista usando a mesma função getCurrentPosition
-      const trailLength = 15;
-      for (let i = 1; i <= trailLength; i++) {
-        const trailProgress = Math.max(0, progress - (i * 0.008));
-        if (trailProgress > 0) {
-          // Temporariamente salvar progress atual
-          const originalProgress = progress;
-          setProgress(trailProgress);
-          const trailPoint = getCurrentPosition();
-          setProgress(originalProgress);
-          
-          const trailX = trailPoint.x * width;
-          const trailY = trailPoint.y * height;
-          
-          const alpha = (1 - i / trailLength) * 0.6;
-          ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
-          ctx.beginPath();
-          ctx.arc(trailX, trailY, 4 * (1 - i / trailLength), 0, 2 * Math.PI);
-          ctx.fill();
-        }
-      }
-      
-      // Animação de pulso maior e mais visível
-      const pulseRadius = 25 + Math.sin(Date.now() * 0.008) * 8;
-      ctx.strokeStyle = '#ef444460';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
-      ctx.stroke();
-      
-      // Segundo pulso menor
-      const pulseRadius2 = 15 + Math.sin(Date.now() * 0.012) * 5;
-      ctx.strokeStyle = '#ef444480';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.arc(x, y, pulseRadius2, 0, 2 * Math.PI);
-      ctx.stroke();
-    }
-  };
-
-  const getCurrentPosition = () => {
-    if (progress === 0) return routePoints[0];
-    if (progress === 1) return routePoints[routePoints.length - 1];
-    
-    const totalSegments = routePoints.length - 1;
-    const segmentProgress = progress * totalSegments;
-    const currentSegment = Math.floor(segmentProgress);
-    const segmentRatio = segmentProgress - currentSegment;
-    
-    if (currentSegment >= routePoints.length - 1) {
-      return routePoints[routePoints.length - 1];
-    }
-    
-    const start = routePoints[currentSegment];
-    const end = routePoints[currentSegment + 1];
-    
-    return {
-      x: start.x + (end.x - start.x) * segmentRatio,
-      y: start.y + (end.y - start.y) * segmentRatio,
-      name: '',
-      km: 0
-    };
-  };
 
   const startAnimation = () => {
     setIsPlaying(true);
     const startTime = Date.now();
-    const duration = 12000; // 12 segundos para ver melhor a animação
+    const duration = 15000; // 15 segundos para visualizar melhor
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -241,14 +254,14 @@ const Journey3DMap = () => {
         animationRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
-        // Reiniciar automaticamente após 2 segundos
+        // Reiniciar automaticamente após 3 segundos
         setTimeout(() => {
           setProgress(0);
           setCurrentKm(0);
           setTimeout(() => {
             startAnimation();
           }, 1000);
-        }, 2000);
+        }, 3000);
       }
     };
 
@@ -256,37 +269,12 @@ const Journey3DMap = () => {
   };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Ajustar tamanho do canvas
-    const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Loop de renderização
-    const render = () => {
-      drawRoute(ctx, canvas);
-      requestAnimationFrame(render);
-    };
-    render();
-
-    // Iniciar animação automaticamente
+    // Iniciar automaticamente após 1 segundo
     const timer = setTimeout(() => {
       startAnimation();
     }, 1000);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
       clearTimeout(timer);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -295,95 +283,92 @@ const Journey3DMap = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[600px] bg-slate-900 rounded-2xl overflow-hidden">
-      <canvas 
-        ref={canvasRef} 
-        className="absolute inset-0 w-full h-full"
-        style={{ width: '100%', height: '100%' }}
-      />
+    <div className="relative w-full h-[700px] bg-gradient-to-b from-slate-900 to-black rounded-2xl overflow-hidden">
+      {/* Cena 3D */}
+      <div className="absolute inset-0">
+        <Scene3D progress={progress} />
+      </div>
       
-      {/* Overlay 3D effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/20 pointer-events-none" />
-      
-      {/* Estatísticas em tempo real - apenas visualização */}
-      <div className="absolute bottom-6 left-6 right-6 z-10">
-        <Card className="p-4 bg-background/90 backdrop-blur-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <Bike className="w-6 h-6 text-road-yellow" />
-              <div className="text-left">
-                <div className="text-2xl font-bold text-road-yellow">
-                  {currentKm.toLocaleString()} km
+      {/* Overlay com informações */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Estatísticas em tempo real */}
+        <div className="absolute bottom-6 left-6 right-6 z-10 pointer-events-auto">
+          <Card className="p-6 bg-background/95 backdrop-blur-sm border-none shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-road-yellow/20 rounded-full">
+                  <Bike className="w-8 h-8 text-road-yellow" />
+                </div>
+                <div>
+                  <div className="text-3xl font-bold text-road-yellow">
+                    {currentKm.toLocaleString()} km
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    de {totalDistance.toLocaleString()} km total
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-right">
+                <div className="text-2xl font-bold text-foreground">
+                  {Math.round(progress * 100)}%
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  de {totalDistance.toLocaleString()} km total
+                  Concluído
                 </div>
               </div>
             </div>
-            
-            {/* Progresso visual */}
-            <div className="text-right">
-              <div className="text-lg font-semibold text-foreground">
-                {Math.round(progress * 100)}%
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Concluído
+
+            {/* Barra de progresso moderna */}
+            <div className="w-full bg-muted rounded-full h-3 mb-4 overflow-hidden">
+              <div 
+                className="h-3 rounded-full bg-gradient-to-r from-road-yellow via-premium-gold to-road-yellow transition-all duration-300 relative"
+                style={{ width: `${progress * 100}%` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-pulse" />
               </div>
             </div>
-          </div>
 
-          {/* Barra de progresso */}
-          <div className="w-full bg-muted rounded-full h-2 mb-4">
-            <div 
-              className="bg-gradient-to-r from-road-yellow to-premium-gold h-2 rounded-full transition-all duration-100"
-              style={{ width: `${progress * 100}%` }}
-            />
-          </div>
-
-          {/* Estatísticas especiais - aparecem quando passa dos 500km */}
-          {currentKm >= recordDistance && (
-            <div className="flex items-center justify-center gap-6 animate-fade-in">
-              <div className="flex items-center gap-2 text-sm">
-                <Trophy className="w-4 h-4 text-premium-gold" />
-                <span>{recordDistance} km em {recordTime}</span>
+            {/* Estatísticas especiais */}
+            {currentKm >= recordDistance && (
+              <div className="flex items-center justify-center gap-8 animate-fade-in">
+                <div className="flex items-center gap-2 text-sm bg-premium-gold/10 px-3 py-2 rounded-full">
+                  <Trophy className="w-4 h-4 text-premium-gold" />
+                  <span className="text-premium-gold font-semibold">{recordDistance} km em {recordTime}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm bg-road-yellow/10 px-3 py-2 rounded-full">
+                  <Clock className="w-4 h-4 text-road-yellow" />
+                  <span className="text-road-yellow font-semibold">Pedalada contínua</span>
+                </div>
               </div>
-              <div className="flex items-center gap-2 text-sm">
-                <Clock className="w-4 h-4 text-road-yellow" />
-                <span>Pedalada contínua</span>
+            )}
+          </Card>
+        </div>
+
+        {/* Título da visualização */}
+        <div className="absolute top-6 left-6 z-10">
+          <Card className="p-4 bg-background/95 backdrop-blur-sm border-none shadow-lg">
+            <div className="flex items-center gap-3">
+              <MapPin className="w-6 h-6 text-road-yellow" />
+              <div>
+                <div className="text-lg font-bold text-road-yellow">Jornada 3D</div>
+                <div className="text-sm text-muted-foreground">João Pessoa → Cristo Redentor</div>
               </div>
             </div>
-          )}
-        </Card>
-      </div>
+          </Card>
+        </div>
 
-      {/* Legenda */}
-      <div className="absolute top-6 left-6 z-10">
-        <Card className="p-3 bg-background/90 backdrop-blur-sm">
-          <div className="space-y-2 text-sm">
+        {/* Status da animação */}
+        <div className="absolute top-6 right-6 z-10">
+          <Card className="p-3 bg-background/95 backdrop-blur-sm border-none shadow-lg">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span>João Pessoa</span>
+              <div className={`w-3 h-3 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-yellow-500'}`} />
+              <span className="text-sm font-medium">
+                {isPlaying ? 'Em movimento' : 'Preparando...'}
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-road-yellow rounded-full"></div>
-              <span>Cristo Redentor</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-              <span>O Rei do Longão</span>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Título da animação */}
-      <div className="absolute top-6 right-6 z-10">
-        <Card className="p-3 bg-background/90 backdrop-blur-sm">
-          <div className="text-sm font-semibold text-center">
-            <div className="text-road-yellow">Flyover 3D</div>
-            <div className="text-xs text-muted-foreground">João Pessoa → Rio</div>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
     </div>
   );
