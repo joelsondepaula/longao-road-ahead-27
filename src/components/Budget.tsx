@@ -9,35 +9,40 @@ const Budget = () => {
       category: "Alimentação e hospedagem",
       amount: "R$ 6.000",
       description: "Refeições e acomodação durante a jornada",
-      color: "bg-blue-500"
+      color: "bg-trust-blue",
+      borderColor: "border-trust-blue"
     },
     {
       icon: <Wrench className="w-5 h-5" />,
       category: "Equipamentos e peças",
       amount: "R$ 4.000", 
       description: "Manutenção, peças de reposição e equipamentos",
-      color: "bg-green-500"
+      color: "bg-success-green",
+      borderColor: "border-success-green"
     },
     {
       icon: <Camera className="w-5 h-5" />,
       category: "Produção de conteúdo",
       amount: "R$ 5.000",
       description: "Câmeras, equipamentos de gravação e edição",
-      color: "bg-purple-500"
+      color: "bg-primary",
+      borderColor: "border-primary"
     },
     {
       icon: <Shield className="w-5 h-5" />,
       category: "Seguro e documentação", 
       amount: "R$ 3.000",
       description: "Seguros, vistos e documentações necessárias",
-      color: "bg-orange-500"
+      color: "bg-energy-orange",
+      borderColor: "border-energy-orange"
     },
     {
       icon: <Plane className="w-5 h-5" />,
       category: "Passagem de volta",
       amount: "R$ 3.000",
       description: "Retorno de Ushuaia para o Brasil",
-      color: "bg-red-500"
+      color: "bg-destructive",
+      borderColor: "border-destructive"
     }
   ];
 
@@ -63,23 +68,22 @@ const Budget = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {budgetItems.map((item, index) => (
-              <Card key={index} className="relative overflow-hidden group hover:shadow-lg transition-all duration-300">
-                <div className={`absolute top-0 left-0 w-full h-1 ${item.color}`} />
+              <Card key={index} className={`relative overflow-hidden group hover:shadow-lg transition-all duration-300 border-l-4 ${item.borderColor}`}>
                 
                 <CardHeader className="pb-3">
                   <div className="flex items-center space-x-3">
-                    <div className={`p-2 rounded-full ${item.color} text-white`}>
+                    <div className={`p-3 rounded-full ${item.color} text-primary-foreground shadow-lg`}>
                       {item.icon}
                     </div>
                     <div className="flex-1">
-                      <CardTitle className="text-lg leading-tight">{item.category}</CardTitle>
+                      <CardTitle className="text-lg leading-tight text-foreground">{item.category}</CardTitle>
                     </div>
                   </div>
                 </CardHeader>
                 
                 <CardContent>
                   <div className="space-y-3">
-                    <div className="text-2xl font-bold text-road-yellow">
+                    <div className="text-2xl font-bold text-primary">
                       {item.amount}
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
@@ -92,21 +96,21 @@ const Budget = () => {
           </div>
 
           {/* Total */}
-          <Card className="bg-gradient-to-r from-asphalt-dark to-secondary border-road-yellow/50 text-center">
+          <Card className="bg-gradient-to-r from-secondary to-card border-2 border-primary/30 text-center shadow-xl">
             <CardHeader>
-              <CardTitle className="text-2xl text-road-white flex items-center justify-center">
-                <DollarSign className="w-6 h-6 mr-2 text-road-yellow" />
+              <CardTitle className="text-2xl text-card-foreground flex items-center justify-center">
+                <DollarSign className="w-6 h-6 mr-2 text-primary" />
                 Total Estimado
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl md:text-5xl font-bold text-road-yellow mb-4">
+              <div className="text-4xl md:text-5xl font-bold text-primary mb-4">
                 R$ {totalAmount.toLocaleString('pt-BR')}
               </div>
-              <Badge variant="outline" className="border-road-yellow text-road-yellow text-sm">
+              <Badge variant="outline" className="border-primary text-primary text-sm bg-primary/10">
                 Investimento para uma jornada transformadora
               </Badge>
-              <p className="text-road-white/80 mt-4 max-w-2xl mx-auto">
+              <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
                 Cada real investido será transformado em conteúdo inspirador, 
                 visibilidade para parceiros e uma história de superação que motivará milhares de pessoas.
               </p>
