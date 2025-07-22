@@ -255,13 +255,33 @@ const Journey3DMap = () => {
     };
     render();
 
+    // Iniciar animação automaticamente
+    const timer = setTimeout(() => {
+      startAnimation();
+    }, 1000);
+
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      clearTimeout(timer);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [progress]);
+  }, []);
+
+  // Reiniciar animação quando terminar
+  useEffect(() => {
+    if (progress === 1 && !isPlaying) {
+      const timer = setTimeout(() => {
+        resetAnimation();
+        setTimeout(() => {
+          startAnimation();
+        }, 2000);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [progress, isPlaying]);
 
   return (
     <div className="relative w-full h-[600px] bg-slate-900 rounded-2xl overflow-hidden">
