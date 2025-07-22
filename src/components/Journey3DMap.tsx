@@ -28,10 +28,25 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      ctx.scale(dpr, dpr);
+    };
+
     const draw = () => {
-      const { width, height } = canvas;
+      const rect = canvas.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
       
-      // Limpar canvas com gradiente de fundo
+      // Limpar canvas
+      ctx.clearRect(0, 0, width, height);
+      
+      // Fundo com gradiente
       const gradient = ctx.createLinearGradient(0, 0, width, height);
       gradient.addColorStop(0, '#0f172a');
       gradient.addColorStop(0.5, '#1e293b');
@@ -39,13 +54,11 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      // Desenhar grade moderna
-      ctx.strokeStyle = '#475569';
+      // Grade sutil
+      ctx.strokeStyle = 'rgba(71, 85, 105, 0.2)';
       ctx.lineWidth = 1;
-      ctx.globalAlpha = 0.3;
       
-      // Linhas horizontais
-      for (let i = 0; i < 8; i++) {
+      for (let i = 1; i < 8; i++) {
         const y = (height / 8) * i;
         ctx.beginPath();
         ctx.moveTo(0, y);
@@ -53,22 +66,17 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
         ctx.stroke();
       }
       
-      // Linhas verticais
-      for (let i = 0; i < 10; i++) {
+      for (let i = 1; i < 10; i++) {
         const x = (width / 10) * i;
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
         ctx.stroke();
       }
-      
-      ctx.globalAlpha = 1;
 
-      // Desenhar rota base
-      ctx.strokeStyle = '#fbbf24';
+      // Rota base
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.6)';
       ctx.lineWidth = 3;
-      ctx.shadowColor = '#fbbf24';
-      ctx.shadowBlur = 5;
       ctx.beginPath();
       
       routeCoordinates.forEach((point, index) => {
@@ -82,147 +90,122 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
         }
       });
       ctx.stroke();
-      ctx.shadowBlur = 0;
 
-      // Desenhar progresso da rota
+      // Progresso da rota (corrigido para ser mais fluido)
       if (progress > 0) {
         ctx.strokeStyle = '#ef4444';
         ctx.lineWidth = 5;
         ctx.shadowColor = '#ef4444';
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         
-        let drawnProgress = 0;
-        for (let i = 0; i < routeCoordinates.length - 1; i++) {
+        // Interpolar entre pontos baseado no progresso total
+        const totalSegments = routeCoordinates.length - 1;
+        const currentSegmentFloat = progress * totalSegments;
+        const currentSegment = Math.floor(currentSegmentFloat);
+        const segmentProgress = currentSegmentFloat - currentSegment;
+        
+        // Desenhar segmentos completos
+        for (let i = 0; i < Math.min(currentSegment, totalSegments); i++) {
           const start = routeCoordinates[i];
           const end = routeCoordinates[i + 1];
-          const segmentProgress = 1 / (routeCoordinates.length - 1);
           
-          if (drawnProgress + segmentProgress <= progress) {
-            // Desenhar segmento completo
-            if (i === 0) {
-              ctx.moveTo(start.x * width, start.y * height);
-            }
-            ctx.lineTo(end.x * width, end.y * height);
-            drawnProgress += segmentProgress;
-          } else {
-            // Desenhar segmento parcial
-            const partialProgress = (progress - drawnProgress) / segmentProgress;
-            const x = start.x + (end.x - start.x) * partialProgress;
-            const y = start.y + (end.y - start.y) * partialProgress;
-            
-            if (i === 0) {
-              ctx.moveTo(start.x * width, start.y * height);
-            }
-            ctx.lineTo(x * width, y * height);
-            break;
+          if (i === 0) {
+            ctx.moveTo(start.x * width, start.y * height);
           }
+          ctx.lineTo(end.x * width, end.y * height);
         }
+        
+        // Desenhar segmento parcial se necessário
+        if (currentSegment < totalSegments && segmentProgress > 0) {
+          const start = routeCoordinates[currentSegment];
+          const end = routeCoordinates[currentSegment + 1];
+          
+          const partialX = start.x + (end.x - start.x) * segmentProgress;
+          const partialY = start.y + (end.y - start.y) * segmentProgress;
+          
+          if (currentSegment === 0) {
+            ctx.moveTo(start.x * width, start.y * height);
+          }
+          ctx.lineTo(partialX * width, partialY * height);
+        }
+        
         ctx.stroke();
         ctx.shadowBlur = 0;
       }
 
-      // Desenhar cidades
+      // Cidades
       routeCoordinates.forEach((city, index) => {
         const x = city.x * width;
         const y = city.y * height;
         
-        // Círculo da cidade
         const isStart = index === 0;
         const isEnd = index === routeCoordinates.length - 1;
         
         ctx.fillStyle = isStart ? '#22c55e' : isEnd ? '#fbbf24' : '#64748b';
         ctx.shadowColor = ctx.fillStyle;
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.beginPath();
-        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.arc(x, y, 6, 0, 2 * Math.PI);
         ctx.fill();
         ctx.shadowBlur = 0;
         
         // Nome da cidade
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 12px sans-serif';
+        ctx.font = 'bold 11px sans-serif';
         ctx.textAlign = 'center';
         ctx.shadowColor = '#000000';
-        ctx.shadowBlur = 3;
-        ctx.fillText(city.name, x, y - 15);
+        ctx.shadowBlur = 2;
+        ctx.fillText(city.name, x, y - 12);
         ctx.shadowBlur = 0;
       });
 
-      // Desenhar ciclista animado
+      // Ciclista animado (posição mais precisa)
       if (progress > 0) {
         const currentPosition = getCurrentPosition(progress);
         const x = currentPosition.x * width;
         const y = currentPosition.y * height;
         
-        // Efeito de rastro
-        const trailLength = 10;
-        for (let i = 1; i <= trailLength; i++) {
-          const trailProgress = Math.max(0, progress - (i * 0.01));
-          if (trailProgress > 0) {
-            const trailPos = getCurrentPosition(trailProgress);
-            const trailX = trailPos.x * width;
-            const trailY = trailPos.y * height;
-            
-            const alpha = (1 - i / trailLength) * 0.6;
-            ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(trailX, trailY, 3 * (1 - i / trailLength), 0, 2 * Math.PI);
-            ctx.fill();
-          }
-        }
-        
-        // Ciclista principal
+        // Ciclista
         ctx.fillStyle = '#ef4444';
         ctx.shadowColor = '#ef4444';
-        ctx.shadowBlur = 15;
+        ctx.shadowBlur = 10;
         ctx.beginPath();
         ctx.arc(x, y, 8, 0, 2 * Math.PI);
         ctx.fill();
         ctx.shadowBlur = 0;
         
-        // Efeito de pulso
-        const time = Date.now() * 0.005;
-        const pulseRadius = 20 + Math.sin(time) * 8;
-        ctx.strokeStyle = '#ef444450';
-        ctx.lineWidth = 3;
+        // Pulso animado
+        const time = Date.now() * 0.003;
+        const pulseRadius = 15 + Math.sin(time) * 5;
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.3)';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
         ctx.stroke();
       }
 
-      // Informações mínimas no canto superior direito
-      const infoX = width - 180;
-      const infoY = 20;
-      const infoWidth = 160;
-      const infoHeight = 50;
+      // Info box compacta
+      const infoWidth = Math.min(140, width * 0.25);
+      const infoHeight = 40;
+      const infoX = width - infoWidth - 15;
+      const infoY = 15;
 
-      // Fundo sutil
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
       ctx.fillRect(infoX, infoY, infoWidth, infoHeight);
 
-      // Borda discreta
-      ctx.strokeStyle = 'rgba(251, 191, 36, 0.3)';
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.4)';
       ctx.lineWidth = 1;
       ctx.strokeRect(infoX, infoY, infoWidth, infoHeight);
 
-      // Quilometragem atual
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 18px sans-serif';
+      ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(`${currentKm.toLocaleString()} km`, infoX + infoWidth/2, infoY + 25);
+      ctx.fillText(`${currentKm.toLocaleString()} km`, infoX + infoWidth/2, infoY + 18);
 
-      // Porcentagem
       ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      ctx.font = '12px sans-serif';
-      ctx.fillText(`${Math.round(progress * 100)}% concluído`, infoX + infoWidth/2, infoY + 42);
-    };
-
-    const resizeCanvas = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      ctx.font = '10px sans-serif';
+      ctx.fillText(`${Math.round(progress * 100)}%`, infoX + infoWidth/2, infoY + 32);
     };
 
     resizeCanvas();
@@ -237,7 +220,7 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [progress]);
+  }, [progress, currentKm]);
 
   const getCurrentPosition = (currentProgress: number) => {
     if (currentProgress <= 0) return routeCoordinates[0];
@@ -285,16 +268,23 @@ const Journey3DMap = () => {
   const startAnimation = () => {
     setIsPlaying(true);
     const startTime = Date.now();
-    const duration = 12000; // 12 segundos
+    const duration = 15000; // 15 segundos para movimento mais suave
+
+    const easeInOutQuad = (t: number): number => {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    };
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      const animationProgress = Math.min(elapsed / duration, 1);
+      const linearProgress = Math.min(elapsed / duration, 1);
       
-      setProgress(animationProgress);
-      setCurrentKm(Math.floor(totalDistance * animationProgress));
+      // Aplicar easing para movimento mais natural
+      const easedProgress = easeInOutQuad(linearProgress);
+      
+      setProgress(easedProgress);
+      setCurrentKm(Math.floor(totalDistance * easedProgress));
 
-      if (animationProgress < 1) {
+      if (linearProgress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
@@ -304,8 +294,8 @@ const Journey3DMap = () => {
           setCurrentKm(0);
           setTimeout(() => {
             startAnimation();
-          }, 1000);
-        }, 3000);
+          }, 2000);
+        }, 4000);
       }
     };
 
