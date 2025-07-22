@@ -34,9 +34,9 @@ const Media = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-6">
-              <Newspaper className="w-8 h-8 text-primary mr-3" />
+              <Newspaper className="w-8 h-8 text-road-yellow mr-3" />
               <h2 className="text-3xl md:text-5xl font-bold text-foreground">
-                Na <span className="text-primary">Mídia</span>
+                Na <span className="text-road-yellow">Mídia</span>
               </h2>
             </div>
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -46,25 +46,25 @@ const Media = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {mediaItems.map((item, index) => (
-              <Card key={index} className="overflow-hidden group hover:shadow-xl transition-all duration-300 border-l-4 border-l-primary">
+              <Card key={index} className="overflow-hidden group hover:shadow-lg transition-all duration-300 border-l-4 border-l-road-yellow">
                 <div className="relative overflow-hidden">
                   <img 
                     src={item.thumbnail} 
                     alt={item.title}
                     className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-secondary/30 group-hover:bg-secondary/20 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
                   {item.type === "video" && (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-primary/95 rounded-full p-3 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                        <Play className="w-6 h-6 text-primary-foreground" />
+                      <div className="bg-road-yellow/90 rounded-full p-3 group-hover:scale-110 transition-transform duration-300">
+                        <Play className="w-6 h-6 text-asphalt-dark" />
                       </div>
                     </div>
                   )}
                 </div>
                 
                 <CardHeader>
-                  <CardTitle className="text-lg group-hover:text-primary transition-colors duration-300">
+                  <CardTitle className="text-lg group-hover:text-road-yellow transition-colors duration-300">
                     {item.title}
                   </CardTitle>
                 </CardHeader>
@@ -73,7 +73,7 @@ const Media = () => {
                   <p className="text-muted-foreground mb-4">{item.description}</p>
                   <Button 
                     variant="outline" 
-                    className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                    className="w-full border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark transition-colors duration-300"
                     onClick={() => window.open(item.link, '_blank')}
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
@@ -90,7 +90,7 @@ const Media = () => {
             </p>
             <Button 
               variant="outline" 
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              className="border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark"
             >
               Contato para Imprensa
             </Button>
