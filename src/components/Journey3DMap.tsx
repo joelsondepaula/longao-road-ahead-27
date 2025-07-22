@@ -146,27 +146,57 @@ const Journey3DMap = () => {
       ctx.fillText(point.name, x, y - 15);
     });
 
-    // Desenhar ciclista em movimento
+    // Desenhar ciclista em movimento no centro da tela
     if (progress > 0) {
       const currentPoint = getCurrentPosition();
       const x = currentPoint.x * width;
       const y = currentPoint.y * height;
       
-      // Efeito de brilho para o ciclista
+      // Ciclista principal com efeito brilhante
       ctx.fillStyle = '#ef4444';
       ctx.shadowColor = '#ef4444';
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = 20;
       ctx.beginPath();
-      ctx.arc(x, y, 6, 0, 2 * Math.PI);
+      ctx.arc(x, y, 8, 0, 2 * Math.PI);
       ctx.fill();
       ctx.shadowBlur = 0;
       
-      // Animação de pulso
-      const pulseRadius = 15 + Math.sin(Date.now() * 0.01) * 5;
-      ctx.strokeStyle = '#ef444440';
-      ctx.lineWidth = 2;
+      // Rastro do ciclista usando a mesma função getCurrentPosition
+      const trailLength = 15;
+      for (let i = 1; i <= trailLength; i++) {
+        const trailProgress = Math.max(0, progress - (i * 0.008));
+        if (trailProgress > 0) {
+          // Temporariamente salvar progress atual
+          const originalProgress = progress;
+          setProgress(trailProgress);
+          const trailPoint = getCurrentPosition();
+          setProgress(originalProgress);
+          
+          const trailX = trailPoint.x * width;
+          const trailY = trailPoint.y * height;
+          
+          const alpha = (1 - i / trailLength) * 0.6;
+          ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
+          ctx.beginPath();
+          ctx.arc(trailX, trailY, 4 * (1 - i / trailLength), 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+      
+      // Animação de pulso maior e mais visível
+      const pulseRadius = 25 + Math.sin(Date.now() * 0.008) * 8;
+      ctx.strokeStyle = '#ef444460';
+      ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
+      ctx.stroke();
+      
+      // Segundo pulso menor
+      const pulseRadius2 = 15 + Math.sin(Date.now() * 0.012) * 5;
+      ctx.strokeStyle = '#ef444480';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x, y, pulseRadius2, 0, 2 * Math.PI);
       ctx.stroke();
     }
   };
