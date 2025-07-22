@@ -11,8 +11,14 @@ const routeCoordinates = [
   { name: "Rio de Janeiro", x: 0.5, y: 0.8, km: 2530 }
 ];
 
-// Componente Canvas 2D moderno
-const ModernCanvas = ({ progress }: { progress: number }) => {
+// Componente Canvas 2D moderno com informações integradas
+const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, recordTime }: { 
+  progress: number;
+  currentKm: number;
+  totalDistance: number;
+  recordDistance: number;
+  recordTime: string;
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -184,6 +190,87 @@ const ModernCanvas = ({ progress }: { progress: number }) => {
         ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
         ctx.stroke();
       }
+
+      // INTEGRAR INFORMAÇÕES NO CANVAS
+      // Desenhar painel de informações no canto inferior
+      const panelX = 20;
+      const panelY = height - 120;
+      const panelWidth = width - 40;
+      const panelHeight = 100;
+
+      // Fundo do painel com gradiente
+      const panelGradient = ctx.createLinearGradient(panelX, panelY, panelX, panelY + panelHeight);
+      panelGradient.addColorStop(0, 'rgba(0, 0, 0, 0.8)');
+      panelGradient.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
+      ctx.fillStyle = panelGradient;
+      ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
+
+      // Borda do painel
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
+
+      // Informações de quilometragem
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.textAlign = 'left';
+      const kmText = `${currentKm.toLocaleString()} km`;
+      ctx.fillText(kmText, panelX + 20, panelY + 40);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '16px sans-serif';
+      ctx.fillText(`de ${totalDistance.toLocaleString()} km total`, panelX + 20, panelY + 65);
+
+      // Porcentagem no lado direito
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 32px sans-serif';
+      ctx.textAlign = 'right';
+      const percentText = `${Math.round(progress * 100)}%`;
+      ctx.fillText(percentText, panelX + panelWidth - 20, panelY + 40);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '14px sans-serif';
+      ctx.fillText('Concluído', panelX + panelWidth - 20, panelY + 65);
+
+      // Barra de progresso no painel
+      const barX = panelX + 20;
+      const barY = panelY + 75;
+      const barWidth = panelWidth - 40;
+      const barHeight = 8;
+
+      // Fundo da barra
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fillRect(barX, barY, barWidth, barHeight);
+
+      // Progresso da barra
+      if (progress > 0) {
+        const progressGradient = ctx.createLinearGradient(barX, barY, barX + barWidth * progress, barY);
+        progressGradient.addColorStop(0, '#fbbf24');
+        progressGradient.addColorStop(1, '#f59e0b');
+        ctx.fillStyle = progressGradient;
+        ctx.fillRect(barX, barY, barWidth * progress, barHeight);
+      }
+
+      // Recordes quando aplicável
+      if (currentKm >= recordDistance) {
+        const recordY = panelY - 50;
+        
+        // Fundo do recorde
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.1)';
+        ctx.fillRect(panelX, recordY, panelWidth, 40);
+        
+        // Borda do recorde
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(panelX, recordY, panelWidth, 40);
+
+        // Texto do recorde
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(`🏆 RECORDE: ${recordDistance} km em ${recordTime} - Pedalada contínua`, 
+                    panelX + panelWidth / 2, recordY + 25);
+      }
     };
 
     const resizeCanvas = () => {
@@ -295,135 +382,40 @@ const Journey3DMap = () => {
 
   return (
     <div className="relative w-full h-[650px] bg-gradient-to-br from-slate-900 via-slate-800 to-black rounded-3xl overflow-hidden shadow-2xl border border-slate-700/30">
-      {/* Canvas animado */}
-      <ModernCanvas progress={progress} />
+      {/* Canvas animado com informações integradas */}
+      <ModernCanvas 
+        progress={progress} 
+        currentKm={currentKm}
+        totalDistance={totalDistance}
+        recordDistance={recordDistance}
+        recordTime={recordTime}
+      />
       
-      {/* Overlay com efeito de profundidade - mais sutil */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/20 pointer-events-none rounded-3xl" />
-      
-      {/* Interface moderna com melhor spacing */}
-      <div className="absolute inset-0 pointer-events-none p-4">
-        
-        {/* Header com título e status - melhor posicionamento */}
-        <div className="flex justify-between items-start mb-4">
-          <Card className="p-4 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-xl rounded-2xl">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gradient-to-r from-road-yellow to-premium-gold rounded-xl">
-                <MapPin className="w-5 h-5 text-white" />
+      {/* Header com título e status */}
+      <div className="absolute top-4 left-4 right-4 pointer-events-none">
+        <div className="flex justify-between items-start">
+          <Card className="p-3 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-xl rounded-xl">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 bg-gradient-to-r from-road-yellow to-premium-gold rounded-lg">
+                <MapPin className="w-4 h-4 text-white" />
               </div>
               <div>
-                <div className="text-lg font-bold text-road-yellow font-heading">Jornada Épica</div>
+                <div className="text-sm font-bold text-road-yellow font-heading">Jornada Épica</div>
                 <div className="text-xs text-muted-foreground">João Pessoa → Cristo Redentor</div>
               </div>
             </div>
           </Card>
 
-          <Card className="p-3 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-xl rounded-2xl">
+          <Card className="p-2 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-xl rounded-xl">
             <div className="flex items-center gap-2">
-              <div className={`w-2.5 h-2.5 rounded-full ${isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+              <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
               <span className="text-xs font-medium text-foreground">
                 {isPlaying ? 'Em movimento' : 'Aguardando...'}
               </span>
             </div>
           </Card>
         </div>
-
-        {/* Estatísticas principais - layout melhorado */}
-        <div className="absolute bottom-4 left-4 right-4 z-10 pointer-events-auto">
-          <Card className="p-6 bg-background/98 backdrop-blur-md border border-slate-200/20 shadow-2xl rounded-3xl">
-            
-            {/* Cabeçalho das estatísticas */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="relative">
-                  <div className="p-4 bg-gradient-to-r from-road-yellow to-premium-gold rounded-2xl shadow-lg">
-                    <Bike className="w-8 h-8 text-white" />
-                  </div>
-                  {isPlaying && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full animate-pulse border-2 border-white" />
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <div className="text-4xl font-bold text-road-yellow font-heading">
-                    {currentKm.toLocaleString()}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    de {totalDistance.toLocaleString()} km total
-                  </div>
-                </div>
-              </div>
-              
-              <div className="text-right space-y-1">
-                <div className="text-3xl font-bold text-foreground font-heading">
-                  {Math.round(progress * 100)}%
-                </div>
-                <div className="text-xs text-muted-foreground uppercase tracking-wide">
-                  Concluído
-                </div>
-              </div>
-            </div>
-
-            {/* Barra de progresso aprimorada */}
-            <div className="relative mb-6">
-              <div className="w-full bg-muted/60 rounded-full h-4 overflow-hidden shadow-inner">
-                <div 
-                  className="h-4 rounded-full bg-gradient-to-r from-road-yellow via-premium-gold to-energy-orange transition-all duration-500 ease-out relative"
-                  style={{ width: `${progress * 100}%` }}
-                >
-                  {/* Efeito de brilho na barra */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-pulse" />
-                  
-                  {/* Indicador de posição */}
-                  {progress > 0 && (
-                    <div className="absolute right-0 top-1/2 transform translate-x-1/2 -translate-y-1/2">
-                      <div className="w-6 h-6 bg-white rounded-full shadow-lg border-2 border-road-yellow flex items-center justify-center">
-                        <div className="w-2 h-2 bg-road-yellow rounded-full animate-pulse" />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              {/* Labels da barra de progresso */}
-              <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                <span>João Pessoa</span>
-                <span className="font-medium text-road-yellow">
-                  {currentKm} km
-                </span>
-                <span>Rio de Janeiro</span>
-              </div>
-            </div>
-
-            {/* Estatísticas especiais - layout melhorado */}
-            {currentKm >= recordDistance && (
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in">
-                <div className="flex items-center gap-3 bg-gradient-to-r from-premium-gold/10 to-premium-gold/5 px-6 py-3 rounded-2xl border border-premium-gold/20 shadow-lg backdrop-blur-sm">
-                  <div className="p-2 bg-premium-gold/20 rounded-xl">
-                    <Trophy className="w-5 h-5 text-premium-gold" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-premium-gold">Recorde Histórico</div>
-                    <div className="text-xs text-premium-gold/80">{recordDistance} km em {recordTime}</div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 px-6 py-3 rounded-2xl border border-emerald-500/20 shadow-lg backdrop-blur-sm">
-                  <div className="p-2 bg-emerald-500/20 rounded-xl">
-                    <Clock className="w-5 h-5 text-emerald-500" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-emerald-500">Pedalada Contínua</div>
-                    <div className="text-xs text-emerald-500/80">Sem paradas</div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </Card>
-        </div>
       </div>
-      
-      {/* Efeito de borda interna sutil */}
-      <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10 pointer-events-none" />
     </div>
   );
 };
