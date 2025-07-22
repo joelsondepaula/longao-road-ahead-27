@@ -191,55 +191,60 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
         ctx.stroke();
       }
 
-      // INTEGRAR INFORMAÇÕES NO CANVAS
-      // Desenhar painel de informações no canto inferior
-      const panelX = 20;
-      const panelY = height - 120;
-      const panelWidth = width - 40;
-      const panelHeight = 100;
+      // INTEGRAR INFORMAÇÕES NO CANVAS - Layout responsivo e sutil
+      const panelPadding = Math.min(width * 0.03, 20);
+      const panelX = panelPadding;
+      const panelY = height - Math.min(height * 0.15, 80);
+      const panelWidth = width - (panelPadding * 2);
+      const panelHeight = Math.min(height * 0.12, 70);
 
-      // Fundo do painel com gradiente
+      // Fundo do painel mais sutil
       const panelGradient = ctx.createLinearGradient(panelX, panelY, panelX, panelY + panelHeight);
-      panelGradient.addColorStop(0, 'rgba(0, 0, 0, 0.8)');
-      panelGradient.addColorStop(1, 'rgba(0, 0, 0, 0.6)');
+      panelGradient.addColorStop(0, 'rgba(0, 0, 0, 0.6)');
+      panelGradient.addColorStop(1, 'rgba(0, 0, 0, 0.4)');
       ctx.fillStyle = panelGradient;
       ctx.fillRect(panelX, panelY, panelWidth, panelHeight);
 
-      // Borda do painel
-      ctx.strokeStyle = '#fbbf24';
-      ctx.lineWidth = 2;
+      // Borda mais sutil
+      ctx.strokeStyle = 'rgba(251, 191, 36, 0.7)';
+      ctx.lineWidth = 1;
       ctx.strokeRect(panelX, panelY, panelWidth, panelHeight);
 
-      // Informações de quilometragem
+      // Calcular tamanhos de fonte responsivos
+      const baseFontSize = Math.min(width / 40, 24);
+      const smallFontSize = Math.min(width / 60, 14);
+
+      // Informações de quilometragem - layout responsivo
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 36px sans-serif';
+      ctx.font = `bold ${baseFontSize}px sans-serif`;
       ctx.textAlign = 'left';
       const kmText = `${currentKm.toLocaleString()} km`;
-      ctx.fillText(kmText, panelX + 20, panelY + 40);
+      ctx.fillText(kmText, panelX + panelPadding, panelY + panelHeight * 0.45);
 
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '16px sans-serif';
-      ctx.fillText(`de ${totalDistance.toLocaleString()} km total`, panelX + 20, panelY + 65);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.font = `${smallFontSize}px sans-serif`;
+      ctx.fillText(`de ${totalDistance.toLocaleString()} km total`, 
+                   panelX + panelPadding, panelY + panelHeight * 0.7);
 
       // Porcentagem no lado direito
       ctx.fillStyle = '#fbbf24';
-      ctx.font = 'bold 32px sans-serif';
+      ctx.font = `bold ${baseFontSize * 0.9}px sans-serif`;
       ctx.textAlign = 'right';
       const percentText = `${Math.round(progress * 100)}%`;
-      ctx.fillText(percentText, panelX + panelWidth - 20, panelY + 40);
+      ctx.fillText(percentText, panelX + panelWidth - panelPadding, panelY + panelHeight * 0.45);
 
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '14px sans-serif';
-      ctx.fillText('Concluído', panelX + panelWidth - 20, panelY + 65);
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.font = `${smallFontSize}px sans-serif`;
+      ctx.fillText('Concluído', panelX + panelWidth - panelPadding, panelY + panelHeight * 0.7);
 
-      // Barra de progresso no painel
-      const barX = panelX + 20;
-      const barY = panelY + 75;
-      const barWidth = panelWidth - 40;
-      const barHeight = 8;
+      // Barra de progresso mais sutil
+      const barX = panelX + panelPadding;
+      const barY = panelY + panelHeight * 0.85;
+      const barWidth = panelWidth - (panelPadding * 2);
+      const barHeight = Math.max(3, panelHeight * 0.08);
 
       // Fundo da barra
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
       ctx.fillRect(barX, barY, barWidth, barHeight);
 
       // Progresso da barra
@@ -251,25 +256,32 @@ const ModernCanvas = ({ progress, currentKm, totalDistance, recordDistance, reco
         ctx.fillRect(barX, barY, barWidth * progress, barHeight);
       }
 
-      // Recordes quando aplicável
+      // Recordes - mais compacto e responsivo
       if (currentKm >= recordDistance) {
-        const recordY = panelY - 50;
+        const recordHeight = Math.min(height * 0.08, 35);
+        const recordY = panelY - recordHeight - 5;
         
-        // Fundo do recorde
-        ctx.fillStyle = 'rgba(239, 68, 68, 0.1)';
-        ctx.fillRect(panelX, recordY, panelWidth, 40);
+        // Fundo do recorde mais sutil
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.08)';
+        ctx.fillRect(panelX, recordY, panelWidth, recordHeight);
         
         // Borda do recorde
-        ctx.strokeStyle = '#ef4444';
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)';
         ctx.lineWidth = 1;
-        ctx.strokeRect(panelX, recordY, panelWidth, 40);
+        ctx.strokeRect(panelX, recordY, panelWidth, recordHeight);
 
-        // Texto do recorde
+        // Texto do recorde responsivo
         ctx.fillStyle = '#ef4444';
-        ctx.font = 'bold 16px sans-serif';
+        const recordFontSize = Math.min(width / 70, 13);
+        ctx.font = `bold ${recordFontSize}px sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText(`🏆 RECORDE: ${recordDistance} km em ${recordTime} - Pedalada contínua`, 
-                    panelX + panelWidth / 2, recordY + 25);
+        
+        // Texto adaptativo baseado na largura
+        const recordText = width > 600 
+          ? `🏆 RECORDE: ${recordDistance} km em ${recordTime} - Pedalada contínua`
+          : `🏆 RECORDE: ${recordDistance} km em ${recordTime}`;
+        
+        ctx.fillText(recordText, panelX + panelWidth / 2, recordY + recordHeight * 0.65);
       }
     };
 
