@@ -1,230 +1,242 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { PerspectiveCamera, Text, Line, Sphere } from '@react-three/drei';
 import { Card } from '@/components/ui/card';
 import { Bike, MapPin, Trophy, Clock } from 'lucide-react';
-import * as THREE from 'three';
 
-// Coordenadas reais das cidades (latitude, longitude)
+// Coordenadas das cidades para a animação 2D
 const routeCoordinates = [
-  { name: "João Pessoa", lat: -7.1195, lng: -34.8450, km: 0 },
-  { name: "Recife", lat: -8.0476, lng: -34.8770, km: 120 },
-  { name: "Salvador", lat: -12.9714, lng: -38.5014, km: 512 },
-  { name: "Vitória", lat: -20.3155, lng: -40.3128, km: 1200 },
-  { name: "Rio de Janeiro", lat: -22.9068, lng: -43.1729, km: 2530 }
+  { name: "João Pessoa", x: 0.1, y: 0.2, km: 0 },
+  { name: "Recife", x: 0.15, y: 0.3, km: 120 },
+  { name: "Salvador", x: 0.2, y: 0.45, km: 512 },
+  { name: "Vitória", x: 0.35, y: 0.65, km: 1200 },
+  { name: "Rio de Janeiro", x: 0.5, y: 0.8, km: 2530 }
 ];
 
-// Converter coordenadas geográficas para posições 3D
-const convertToPosition = (lat: number, lng: number): [number, number, number] => {
-  const radius = 5;
-  const phi = (90 - lat) * (Math.PI / 180);
-  const theta = (lng + 180) * (Math.PI / 180);
-  
-  const x = radius * Math.sin(phi) * Math.cos(theta);
-  const y = radius * Math.cos(phi);
-  const z = radius * Math.sin(phi) * Math.sin(theta);
-  
-  return [x, y, z];
-};
+// Componente Canvas 2D moderno
+const ModernCanvas = ({ progress }: { progress: number }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-// Componente da Terra com textura
-const Earth = () => {
-  const earthRef = useRef<THREE.Mesh>(null);
-  
-  useFrame(() => {
-    if (earthRef.current) {
-      earthRef.current.rotation.y += 0.001;
-    }
-  });
-
-  return (
-    <mesh ref={earthRef}>
-      <sphereGeometry args={[5, 64, 64]} />
-      <meshStandardMaterial
-        color="#2563eb"
-        roughness={0.8}
-        metalness={0.1}
-      />
-      {/* Continentes simplificados */}
-      <mesh>
-        <sphereGeometry args={[5.01, 32, 32]} />
-        <meshBasicMaterial 
-          color="#22c55e" 
-          transparent 
-          opacity={0.3}
-          wireframe
-        />
-      </mesh>
-    </mesh>
-  );
-};
-
-// Componente da rota
-const Route = ({ progress }: { progress: number }) => {
-  const positions = routeCoordinates.map(coord => convertToPosition(coord.lat, coord.lng));
-  
-  // Criar curva suave entre os pontos
-  const curve = new THREE.CatmullRomCurve3(
-    positions.map(pos => new THREE.Vector3(...pos))
-  );
-  
-  const points = curve.getPoints(100);
-  
-  return (
-    <>
-      {/* Linha da rota */}
-      <Line
-        points={points}
-        color="#fbbf24"
-        lineWidth={3}
-        transparent
-        opacity={0.8}
-      />
-      
-      {/* Parte percorrida */}
-      {progress > 0 && (
-        <Line
-          points={points.slice(0, Math.floor(points.length * progress))}
-          color="#ef4444"
-          lineWidth={5}
-          transparent
-          opacity={1}
-        />
-      )}
-    </>
-  );
-};
-
-// Componente do ciclista
-const Cyclist = ({ progress }: { progress: number }) => {
-  const cyclistRef = useRef<THREE.Group>(null);
-  const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
-  
   useEffect(() => {
-    const positions = routeCoordinates.map(coord => convertToPosition(coord.lat, coord.lng));
-    const curve = new THREE.CatmullRomCurve3(
-      positions.map(pos => new THREE.Vector3(...pos))
-    );
-    
-    const point = curve.getPoint(progress);
-    setPosition([point.x, point.y, point.z]);
-  }, [progress]);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  useFrame((state) => {
-    if (cyclistRef.current) {
-      const time = state.clock.getElapsedTime();
-      cyclistRef.current.position.y += Math.sin(time * 10) * 0.02;
-    }
-  });
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-  if (progress === 0) return null;
-
-  return (
-    <group ref={cyclistRef} position={position}>
-      {/* Ciclista principal */}
-      <Sphere args={[0.1]} position={[0, 0, 0]}>
-        <meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={0.5} />
-      </Sphere>
+    const draw = () => {
+      const { width, height } = canvas;
       
-      {/* Efeito de brilho */}
-      <Sphere args={[0.15]} position={[0, 0, 0]}>
-        <meshBasicMaterial color="#ef4444" transparent opacity={0.3} />
-      </Sphere>
-      
-      {/* Rastro */}
-      <Sphere args={[0.2]} position={[0, 0, 0]}>
-        <meshBasicMaterial color="#fbbf24" transparent opacity={0.1} />
-      </Sphere>
-    </group>
-  );
-};
+      // Limpar canvas com gradiente de fundo
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#0f172a');
+      gradient.addColorStop(0.5, '#1e293b');
+      gradient.addColorStop(1, '#334155');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
 
-// Componente das cidades
-const Cities = () => {
-  return (
-    <>
-      {routeCoordinates.map((city, index) => {
-        const position = convertToPosition(city.lat, city.lng);
+      // Desenhar grade moderna
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 1;
+      ctx.globalAlpha = 0.3;
+      
+      // Linhas horizontais
+      for (let i = 0; i < 8; i++) {
+        const y = (height / 8) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      
+      // Linhas verticais
+      for (let i = 0; i < 10; i++) {
+        const x = (width / 10) * i;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      
+      ctx.globalAlpha = 1;
+
+      // Desenhar rota base
+      ctx.strokeStyle = '#fbbf24';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#fbbf24';
+      ctx.shadowBlur = 5;
+      ctx.beginPath();
+      
+      routeCoordinates.forEach((point, index) => {
+        const x = point.x * width;
+        const y = point.y * height;
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Desenhar progresso da rota
+      if (progress > 0) {
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 5;
+        ctx.shadowColor = '#ef4444';
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        
+        let drawnProgress = 0;
+        for (let i = 0; i < routeCoordinates.length - 1; i++) {
+          const start = routeCoordinates[i];
+          const end = routeCoordinates[i + 1];
+          const segmentProgress = 1 / (routeCoordinates.length - 1);
+          
+          if (drawnProgress + segmentProgress <= progress) {
+            // Desenhar segmento completo
+            if (i === 0) {
+              ctx.moveTo(start.x * width, start.y * height);
+            }
+            ctx.lineTo(end.x * width, end.y * height);
+            drawnProgress += segmentProgress;
+          } else {
+            // Desenhar segmento parcial
+            const partialProgress = (progress - drawnProgress) / segmentProgress;
+            const x = start.x + (end.x - start.x) * partialProgress;
+            const y = start.y + (end.y - start.y) * partialProgress;
+            
+            if (i === 0) {
+              ctx.moveTo(start.x * width, start.y * height);
+            }
+            ctx.lineTo(x * width, y * height);
+            break;
+          }
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      // Desenhar cidades
+      routeCoordinates.forEach((city, index) => {
+        const x = city.x * width;
+        const y = city.y * height;
+        
+        // Círculo da cidade
         const isStart = index === 0;
         const isEnd = index === routeCoordinates.length - 1;
         
-        return (
-          <group key={city.name} position={position}>
-            <Sphere args={[0.05]}>
-              <meshStandardMaterial 
-                color={isStart ? "#22c55e" : isEnd ? "#fbbf24" : "#64748b"} 
-                emissive={isStart ? "#22c55e" : isEnd ? "#fbbf24" : "#64748b"}
-                emissiveIntensity={0.3}
-              />
-            </Sphere>
-            <Text
-              position={[0, 0.3, 0]}
-              fontSize={0.15}
-              color="white"
-              anchorX="center"
-              anchorY="middle"
-            >
-              {city.name}
-            </Text>
-          </group>
-        );
-      })}
-    </>
-  );
-};
+        ctx.fillStyle = isStart ? '#22c55e' : isEnd ? '#fbbf24' : '#64748b';
+        ctx.shadowColor = ctx.fillStyle;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // Nome da cidade
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#000000';
+        ctx.shadowBlur = 3;
+        ctx.fillText(city.name, x, y - 15);
+        ctx.shadowBlur = 0;
+      });
 
-// Componente principal da cena 3D
-const Scene3D = ({ progress }: { progress: number }) => {
-  return (
-    <Canvas style={{ width: '100%', height: '100%', background: 'radial-gradient(circle, #1e1b4b 0%, #0f0a19 100%)' }}>
-      <PerspectiveCamera makeDefault position={[12, 8, 12]} fov={50} />
-      
-      {/* Iluminação */}
-      <ambientLight intensity={0.3} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      <pointLight position={[-10, -10, -5]} intensity={0.5} />
-      
-      {/* Cena */}
-      <Earth />
-      <Route progress={progress} />
-      <Cyclist progress={progress} />
-      <Cities />
-      
-      {/* Estrelas */}
-      <Stars />
-    </Canvas>
-  );
-};
+      // Desenhar ciclista animado
+      if (progress > 0) {
+        const currentPosition = getCurrentPosition(progress);
+        const x = currentPosition.x * width;
+        const y = currentPosition.y * height;
+        
+        // Efeito de rastro
+        const trailLength = 10;
+        for (let i = 1; i <= trailLength; i++) {
+          const trailProgress = Math.max(0, progress - (i * 0.01));
+          if (trailProgress > 0) {
+            const trailPos = getCurrentPosition(trailProgress);
+            const trailX = trailPos.x * width;
+            const trailY = trailPos.y * height;
+            
+            const alpha = (1 - i / trailLength) * 0.6;
+            ctx.fillStyle = `rgba(239, 68, 68, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(trailX, trailY, 3 * (1 - i / trailLength), 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        }
+        
+        // Ciclista principal
+        ctx.fillStyle = '#ef4444';
+        ctx.shadowColor = '#ef4444';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        // Efeito de pulso
+        const time = Date.now() * 0.005;
+        const pulseRadius = 20 + Math.sin(time) * 8;
+        ctx.strokeStyle = '#ef444450';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(x, y, pulseRadius, 0, 2 * Math.PI);
+        ctx.stroke();
+      }
+    };
 
-// Componente das estrelas
-const Stars = () => {
-  const starsRef = useRef<THREE.Points>(null);
-  
-  useFrame(() => {
-    if (starsRef.current) {
-      starsRef.current.rotation.y += 0.0005;
+    const resizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const animate = () => {
+      draw();
+      requestAnimationFrame(animate);
+    };
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, [progress]);
+
+  const getCurrentPosition = (currentProgress: number) => {
+    if (currentProgress <= 0) return routeCoordinates[0];
+    if (currentProgress >= 1) return routeCoordinates[routeCoordinates.length - 1];
+    
+    const totalSegments = routeCoordinates.length - 1;
+    const segmentProgress = currentProgress * totalSegments;
+    const currentSegment = Math.floor(segmentProgress);
+    const segmentRatio = segmentProgress - currentSegment;
+    
+    if (currentSegment >= totalSegments) {
+      return routeCoordinates[routeCoordinates.length - 1];
     }
-  });
-  
-  const starPositions = new Float32Array(1000 * 3);
-  for (let i = 0; i < 1000; i++) {
-    starPositions[i * 3] = (Math.random() - 0.5) * 100;
-    starPositions[i * 3 + 1] = (Math.random() - 0.5) * 100;
-    starPositions[i * 3 + 2] = (Math.random() - 0.5) * 100;
-  }
-  
+    
+    const start = routeCoordinates[currentSegment];
+    const end = routeCoordinates[currentSegment + 1];
+    
+    return {
+      x: start.x + (end.x - start.x) * segmentRatio,
+      y: start.y + (end.y - start.y) * segmentRatio,
+      name: '',
+      km: 0
+    };
+  };
+
   return (
-    <points ref={starsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={1000}
-          array={starPositions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial color="white" size={0.5} />
-    </points>
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 w-full h-full rounded-2xl"
+      style={{ width: '100%', height: '100%' }}
+    />
   );
 };
 
@@ -241,7 +253,7 @@ const Journey3DMap = () => {
   const startAnimation = () => {
     setIsPlaying(true);
     const startTime = Date.now();
-    const duration = 15000; // 15 segundos para visualizar melhor
+    const duration = 12000; // 12 segundos
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
@@ -254,7 +266,7 @@ const Journey3DMap = () => {
         animationRef.current = requestAnimationFrame(animate);
       } else {
         setIsPlaying(false);
-        // Reiniciar automaticamente após 3 segundos
+        // Reiniciar automaticamente
         setTimeout(() => {
           setProgress(0);
           setCurrentKm(0);
@@ -269,7 +281,6 @@ const Journey3DMap = () => {
   };
 
   useEffect(() => {
-    // Iniciar automaticamente após 1 segundo
     const timer = setTimeout(() => {
       startAnimation();
     }, 1000);
@@ -283,21 +294,22 @@ const Journey3DMap = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[700px] bg-gradient-to-b from-slate-900 to-black rounded-2xl overflow-hidden">
-      {/* Cena 3D */}
-      <div className="absolute inset-0">
-        <Scene3D progress={progress} />
-      </div>
+    <div className="relative w-full h-[600px] bg-gradient-to-b from-slate-900 to-black rounded-2xl overflow-hidden shadow-2xl">
+      {/* Canvas animado */}
+      <ModernCanvas progress={progress} />
       
-      {/* Overlay com informações */}
+      {/* Overlay com efeito de profundidade */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-slate-900/30 pointer-events-none rounded-2xl" />
+      
+      {/* Interface moderna */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Estatísticas em tempo real */}
         <div className="absolute bottom-6 left-6 right-6 z-10 pointer-events-auto">
           <Card className="p-6 bg-background/95 backdrop-blur-sm border-none shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-road-yellow/20 rounded-full">
-                  <Bike className="w-8 h-8 text-road-yellow" />
+                <div className="p-3 bg-gradient-to-r from-road-yellow to-premium-gold rounded-full">
+                  <Bike className="w-8 h-8 text-white" />
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-road-yellow">
@@ -332,11 +344,11 @@ const Journey3DMap = () => {
             {/* Estatísticas especiais */}
             {currentKm >= recordDistance && (
               <div className="flex items-center justify-center gap-8 animate-fade-in">
-                <div className="flex items-center gap-2 text-sm bg-premium-gold/10 px-3 py-2 rounded-full">
+                <div className="flex items-center gap-2 text-sm bg-premium-gold/10 px-4 py-2 rounded-full border border-premium-gold/20">
                   <Trophy className="w-4 h-4 text-premium-gold" />
                   <span className="text-premium-gold font-semibold">{recordDistance} km em {recordTime}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm bg-road-yellow/10 px-3 py-2 rounded-full">
+                <div className="flex items-center gap-2 text-sm bg-road-yellow/10 px-4 py-2 rounded-full border border-road-yellow/20">
                   <Clock className="w-4 h-4 text-road-yellow" />
                   <span className="text-road-yellow font-semibold">Pedalada contínua</span>
                 </div>
@@ -345,20 +357,20 @@ const Journey3DMap = () => {
           </Card>
         </div>
 
-        {/* Título da visualização */}
+        {/* Título */}
         <div className="absolute top-6 left-6 z-10">
           <Card className="p-4 bg-background/95 backdrop-blur-sm border-none shadow-lg">
             <div className="flex items-center gap-3">
               <MapPin className="w-6 h-6 text-road-yellow" />
               <div>
-                <div className="text-lg font-bold text-road-yellow">Jornada 3D</div>
+                <div className="text-lg font-bold text-road-yellow">Jornada Interativa</div>
                 <div className="text-sm text-muted-foreground">João Pessoa → Cristo Redentor</div>
               </div>
             </div>
           </Card>
         </div>
 
-        {/* Status da animação */}
+        {/* Status */}
         <div className="absolute top-6 right-6 z-10">
           <Card className="p-3 bg-background/95 backdrop-blur-sm border-none shadow-lg">
             <div className="flex items-center gap-2">
