@@ -36,7 +36,7 @@ const Stats = () => {
     {
       icon: Target,
       label: "Distância Total",
-      value: `${animatedKm.toLocaleString()} km`,
+      value: `~${animatedKm.toLocaleString()} km`,
       color: "text-premium-gold",
       bgColor: "bg-premium-gold/10"
     },
