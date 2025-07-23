@@ -66,7 +66,7 @@ const Challenge = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto bg-slate-950">
           {/* Header Section */}
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-3 mb-6 animate-fade-in">
@@ -120,10 +120,10 @@ const Challenge = () => {
           </div>
 
           {/* Enhanced Content & Objectives */}
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-12 items-start bg-slate-900">
             {/* Content Card */}
-            <Card className="group bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm shadow-2xl">
-              <CardHeader className="pb-6">
+            <Card className="group bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm shadow-2xl bg-slate-900">
+              <CardHeader className="pb-6 bg-slate-900">
                 <CardTitle className="text-2xl font-bold bg-gradient-to-r from-road-yellow to-premium-gold bg-clip-text text-transparent flex items-center">
                   <div className="p-2 bg-road-yellow/20 rounded-xl mr-3">
                     <Calendar className="w-6 h-6 text-road-yellow" />
@@ -133,7 +133,7 @@ const Challenge = () => {
                 <p className="text-road-white/70 mt-2">Documentação completa da jornada em múltiplos formatos</p>
               </CardHeader>
               
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 bg-slate-900">
                 {contentTypes.map((content, index) => <div key={index} className={`
                       ${content.color} rounded-xl p-4 border transition-all duration-300 hover:scale-105
                       flex items-center gap-3 group/item
@@ -147,8 +147,8 @@ const Challenge = () => {
             </Card>
 
             {/* Objectives Card */}
-            <Card className="group bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm shadow-2xl">
-              <CardHeader className="pb-6">
+            <Card className="group bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm shadow-2xl bg-slate-950">
+              <CardHeader className="pb-6 bg-slate-900">
                 <CardTitle className="text-2xl font-bold bg-gradient-to-r from-road-yellow to-premium-gold bg-clip-text text-transparent flex items-center">
                   <div className="p-2 bg-road-yellow/20 rounded-xl mr-3">
                     <Heart className="w-6 h-6 text-road-yellow" />
@@ -158,8 +158,8 @@ const Challenge = () => {
                 <p className="text-road-white/70 mt-2">Os propósitos que movem esta expedição transformadora</p>
               </CardHeader>
               
-              <CardContent className="space-y-6">
-                {objectives.map((objective, index) => <div key={index} className="group/objective flex items-start space-x-4 p-4 rounded-xl bg-gradient-to-r from-road-yellow/5 to-premium-gold/5 border border-road-yellow/20 hover:border-road-yellow/40 transition-all duration-300 hover:scale-105">
+              <CardContent className="space-y-6 bg-slate-900">
+                {objectives.map((objective, index) => <div key={index} className="group/objective flex items-start space-x-4 p-4 rounded-xl bg-gradient-to-r from-road-yellow/5 to-premium-gold/5 border border-road-yellow/20 hover:border-road-yellow/40 transition-all duration-300 hover:scale-105 bg-slate-900">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl group-hover/objective:scale-125 transition-transform duration-300">
                         {objective.emoji}
