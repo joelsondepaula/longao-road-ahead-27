@@ -72,7 +72,9 @@ const Hero = () => {
         {/* Stats Preview */}
         <div className="flex flex-wrap justify-center gap-6 mb-12">
           <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
-            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">8.000km</div>
+            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">
+              <span className="text-lg md:text-xl text-road-white/70 font-normal">~</span>8.000km
+            </div>
             <div className="text-sm text-road-white/80 uppercase tracking-wider">Distância Total</div>
           </div>
           <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
