@@ -175,10 +175,6 @@ const Support = () => {
                 <Heart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                 Fale Conosco
               </Button>
-              <Button variant="outline" size="lg" className="border-2 border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark font-bold px-8 py-4 text-lg transition-all duration-300 group">
-                <Camera className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                Press Kit
-              </Button>
             </div>
           </div>
 
