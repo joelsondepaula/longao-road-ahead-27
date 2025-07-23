@@ -122,7 +122,7 @@ const Challenge = () => {
           {/* Enhanced Content & Objectives */}
           <div className="grid lg:grid-cols-2 gap-12 items-start bg-slate-900">
             {/* Content Card */}
-            <Card className="group bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm shadow-2xl bg-slate-900">
+            <Card className="group bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60 transition-all duration-500 hover:scale-[1.02] backdrop-blur-sm shadow-2xl bg-slate-950">
               <CardHeader className="pb-6 bg-slate-900">
                 <CardTitle className="text-2xl font-bold bg-gradient-to-r from-road-yellow to-premium-gold bg-clip-text text-transparent flex items-center">
                   <div className="p-2 bg-road-yellow/20 rounded-xl mr-3">
