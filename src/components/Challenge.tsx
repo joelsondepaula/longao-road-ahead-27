@@ -29,7 +29,7 @@ const Challenge = () => {
   }];
   const objectives = [{
     icon: <Target className="w-6 h-6" />,
-    text: "Superar limites pessoais e inspirar outros",
+    text: "Superar limites pessoais e inspirar pessoas",
     emoji: "🎯"
   }, {
     icon: <Heart className="w-6 h-6" />,
