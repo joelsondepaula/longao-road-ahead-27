@@ -26,8 +26,8 @@ const Support = () => {
     color: 'from-success-green to-success-green/70'
   }, {
     key: 'exposure',
-    target: 40,
-    suffix: '',
+    target: 50,
+    suffix: '-60',
     label: 'Dias de exposição',
     icon: <Globe className="w-6 h-6" />,
     color: 'from-energy-orange to-energy-orange/70'
@@ -44,7 +44,7 @@ const Support = () => {
       setAnimatedCounts(prev => ({
         impressions: Math.min(prev.impressions + 1, 50),
         followers: Math.min(prev.followers + 1, 5),
-        exposure: Math.min(prev.exposure + 1, 40),
+        exposure: Math.min(prev.exposure + 1, 50),
         countries: Math.min(prev.countries + 1, 3)
       }));
     }, 50);
