@@ -18,7 +18,7 @@ const Contact = () => {
   }, {
     icon: <MessageCircle className="w-6 h-6" />,
     label: "WhatsApp",
-    value: "+55 83 9645-3258",
+    value: "Fale conosco agora",
     link: "https://wa.me/5583964532580",
     action: "Enviar mensagem"
   }];
