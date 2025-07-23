@@ -58,10 +58,7 @@ const Sponsors = () => {
               <Mail className="mr-2 h-5 w-5" />
               Fale Conosco
             </Button>
-            <Button variant="outline" size="lg" className="border-premium-gold text-premium-gold hover:bg-premium-gold hover:text-asphalt-dark font-semibold px-8 py-4 text-lg">
-              <Download className="mr-2 h-5 w-5" />
-              Press Kit
-            </Button>
+            
           </div>
         </div>
 
@@ -106,14 +103,7 @@ const Sponsors = () => {
         <div className="text-center">
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {currentPartners.map((partner, index) => (
-              <div key={index} className="p-6 bg-card border border-border rounded-xl text-center hover:shadow-lg transition-all duration-300">
-                <div className="w-16 h-16 bg-muted rounded-lg mx-auto mb-3 flex items-center justify-center">
-                  <span className="text-xs font-medium text-muted-foreground">{partner.name}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">{partner.category}</p>
-              </div>
-            ))}
+            {currentPartners.map((partner, index) => {})}
           </div>
         </div>
 
