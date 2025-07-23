@@ -124,7 +124,7 @@ const Sponsors = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
               <div className="text-2xl font-heading font-bold text-trust-blue mb-1">
-                500K+
+                50K+
               </div>
               <div className="text-sm text-muted-foreground">
                 Impressões mensais
