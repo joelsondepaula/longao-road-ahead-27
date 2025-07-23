@@ -106,7 +106,14 @@ const Sponsors = () => {
         <div className="text-center">
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {currentPartners.map((partner, index) => {})}
+            {currentPartners.map((partner, index) => (
+              <div key={index} className="p-6 bg-card border border-border rounded-xl text-center hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 bg-muted rounded-lg mx-auto mb-3 flex items-center justify-center">
+                  <span className="text-xs font-medium text-muted-foreground">{partner.name}</span>
+                </div>
+                <p className="text-sm text-muted-foreground">{partner.category}</p>
+              </div>
+            ))}
           </div>
         </div>
 
