@@ -104,20 +104,9 @@ const Sponsors = () => {
 
         {/* Current Partners */}
         <div className="text-center">
-          <h3 className="text-2xl font-heading font-bold text-foreground mb-8">
-            Parceiros Atuais
-          </h3>
+          
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {currentPartners.map((partner, index) => <div key={index} className="p-6 bg-card border border-border rounded-xl hover:shadow-lg transition-all duration-300 group">
-                <div className="w-full h-20 bg-muted rounded-lg flex items-center justify-center mb-4 group-hover:bg-muted/80 transition-colors">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {partner.name}
-                  </span>
-                </div>
-                <div className="text-xs text-muted-foreground uppercase tracking-wider">
-                  {partner.category}
-                </div>
-              </div>)}
+            {currentPartners.map((partner, index) => {})}
           </div>
         </div>
 
