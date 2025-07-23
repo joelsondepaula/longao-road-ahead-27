@@ -50,7 +50,7 @@ const Stats = () => {
     {
       icon: Calendar,
       label: "Dias de Jornada",
-      value: "40",
+      value: "50 - 60",
       color: "text-success-green",
       bgColor: "bg-success-green/10"
     },
