@@ -43,7 +43,7 @@ const Stats = () => {
     {
       icon: MapPin,
       label: "Países",
-      value: "12+",
+      value: "3",
       color: "text-trust-blue",
       bgColor: "bg-trust-blue/10"
     },
