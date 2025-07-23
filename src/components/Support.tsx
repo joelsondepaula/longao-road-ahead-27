@@ -308,32 +308,7 @@ const Support = () => {
           </Card>
 
           {/* Enhanced Spontaneous Donations */}
-          <Card className="mt-12 bg-gradient-to-r from-road-yellow/10 via-premium-gold/5 to-road-yellow/10 border-2 border-road-yellow/30 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-road-yellow/5 via-transparent to-premium-gold/5" />
-            
-            <CardHeader className="text-center relative z-10">
-              <div className="flex items-center justify-center mb-4">
-                <div className="p-3 bg-road-yellow/20 rounded-xl mr-3">
-                  <Heart className="w-8 h-8 text-road-yellow" />
-                </div>
-                <CardTitle className="text-2xl font-bold">Doações Espontâneas</CardTitle>
-              </div>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Qualquer valor é bem-vindo e receberá reconhecimento especial nas redes sociais
-              </p>
-            </CardHeader>
-            
-            <CardContent className="text-center relative z-10">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button variant="outline" size="lg" className="border-2 border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark font-bold transition-all duration-300">
-                  PIX: oreidolongao@gmail.com
-                </Button>
-                <Button size="lg" className="bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-xl font-bold transition-all duration-300">
-                  Fazer Doação
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          
         </div>
       </div>
     </section>;
