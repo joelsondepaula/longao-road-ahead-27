@@ -43,8 +43,6 @@ const PressKit = () => {
     followers: "2K+",
     reach: "50K+"
   }];
-  return <section className="py-16 bg-gradient-to-b from-background to-muted/20">
-      
-    </section>;
+  return;
 };
 export default PressKit;
