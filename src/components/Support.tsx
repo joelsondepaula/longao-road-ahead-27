@@ -167,7 +167,7 @@ const Support = () => {
             
             <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8">
               Conecte sua marca a uma história de superação, determinação e inspiração. Mais de{" "}
-              <span className="font-bold text-road-yellow">25.000 pessoas</span> acompanhando cada pedalada.
+              <span className="font-bold text-road-yellow">5.000 pessoas</span> acompanhando cada pedalada.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
