@@ -82,7 +82,7 @@ const Hero = () => {
             <div className="text-sm text-road-white/80 uppercase tracking-wider">Jornada</div>
           </div>
           <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
-            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">12 países</div>
+            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">3 países</div>
             <div className="text-sm text-road-white/80 uppercase tracking-wider">Atravessados</div>
           </div>
         </div>
