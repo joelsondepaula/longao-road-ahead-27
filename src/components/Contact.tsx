@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Mail, Instagram, MapPin, Phone } from "lucide-react";
+import { Mail, Instagram, MessageCircle, Phone } from "lucide-react";
 const Contact = () => {
   const contactInfo = [{
     icon: <Mail className="w-6 h-6" />,
@@ -15,11 +15,11 @@ const Contact = () => {
     link: "https://instagram.com/oreidolongao",
     action: "Seguir no Instagram"
   }, {
-    icon: <MapPin className="w-6 h-6" />,
-    label: "Localização",
-    value: "João Pessoa - PB",
-    link: null,
-    action: null
+    icon: <MessageCircle className="w-6 h-6" />,
+    label: "WhatsApp",
+    value: "+55 83 9645-3258",
+    link: "https://wa.me/5583964532580",
+    action: "Enviar mensagem"
   }];
   return <section id="contato" className="py-20 bg-asphalt-dark text-road-white">
       <div className="container mx-auto px-4">
