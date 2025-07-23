@@ -132,7 +132,7 @@ const Sponsors = () => {
             </div>
             <div>
               <div className="text-2xl font-heading font-bold text-success-green mb-1">
-                25K+
+                5K+
               </div>
               <div className="text-sm text-muted-foreground">
                 Seguidores engajados
