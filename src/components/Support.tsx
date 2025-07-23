@@ -7,7 +7,7 @@ const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
     impressions: 0,
     followers: 0,
-    exposure: 0,
+    exposure: 50,
     countries: 0
   });
   const impactMetrics = [{
