@@ -22,7 +22,7 @@ const Media = () => {
     thumbnail: "https://images.unsplash.com/photo-1571068316344-75bc76f77890?w=400&h=300&fit=crop",
     link: "#"
   }];
-  return <section id="midia" className="py-20 bg-muted/30">
+  return <section id="midia" className="py-20 bg-slate-50">
       <div className="container mx-auto px-4">
         
       </div>

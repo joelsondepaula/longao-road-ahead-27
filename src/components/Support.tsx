@@ -144,7 +144,7 @@ const Support = () => {
   }];
   return <section id="apoio" className="py-24 bg-gradient-to-br from-background via-slate-50 to-background relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-5 bg-gray-50">
         
       </div>
 
