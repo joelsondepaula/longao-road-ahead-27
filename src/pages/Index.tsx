@@ -1,3 +1,4 @@
+
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
@@ -9,11 +10,31 @@ import PressKit from "@/components/PressKit";
 import Support from "@/components/Support";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+
 const Index = () => {
-  return <div className="min-h-screen">
+  return (
+    <div className="min-h-screen">
       <Navigation />
-      
+      <main>
+        <div id="hero">
+          <Hero />
+        </div>
+        <Stats />
+        <About />
+        <div id="desafio">
+          <Challenge />
+        </div>
+        <Sponsors />
+        <Media />
+        <PressKit />
+        <div id="apoio">
+          <Support />
+        </div>
+        <Contact />
+      </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
