@@ -10,9 +10,7 @@ const Navigation = () => {
     { label: "Início", href: "#hero" },
     { label: "Sobre", href: "#sobre" },
     { label: "Desafio", href: "#desafio" },
-    { label: "Mídia", href: "#midia" },
     { label: "Apoio", href: "#apoio" },
-    
     { label: "Contato", href: "#contato" }
   ];
 
