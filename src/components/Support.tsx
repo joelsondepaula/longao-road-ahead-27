@@ -19,7 +19,7 @@ const Support = () => {
     color: 'from-trust-blue to-trust-blue/70'
   }, {
     key: 'followers',
-    target: 25,
+    target: 5,
     suffix: 'K+',
     label: 'Seguidores engajados',
     icon: <Users className="w-6 h-6" />,
@@ -43,7 +43,7 @@ const Support = () => {
     const interval = setInterval(() => {
       setAnimatedCounts(prev => ({
         impressions: Math.min(prev.impressions + 1, 50),
-        followers: Math.min(prev.followers + 1, 25),
+        followers: Math.min(prev.followers + 1, 5),
         exposure: Math.min(prev.exposure + 1, 40),
         countries: Math.min(prev.countries + 1, 12)
       }));
