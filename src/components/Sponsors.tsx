@@ -51,7 +51,7 @@ const Sponsors = () => {
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-8">
             Conecte sua marca a uma história de superação, determinação e inspiração. 
-            Mais de <strong>25.000 pessoas</strong> acompanhando cada pedalada.
+            Mais de <strong>5.000 pessoas</strong> acompanhando cada pedalada.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold px-8 py-4 text-lg">
@@ -103,7 +103,14 @@ const Sponsors = () => {
         <div className="text-center">
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {currentPartners.map((partner, index) => {})}
+            {currentPartners.map((partner, index) => (
+              <div key={index} className="p-6 bg-card rounded-xl border border-border hover:shadow-lg transition-all duration-300">
+                <div className="text-center">
+                  <div className="text-lg font-semibold text-foreground mb-2">{partner.name}</div>
+                  <div className="text-sm text-muted-foreground">{partner.category}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
