@@ -175,7 +175,7 @@ const Challenge = () => {
           </div>
 
           {/* Call to Action */}
-          <div className="text-center mt-20">
+          <div className="text-center mt-20 bg-slate-900">
             <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-road-yellow/20 to-premium-gold/20 border border-road-yellow/40 rounded-full">
               <Bike className="w-5 h-5 text-road-yellow animate-pulse" />
               <span className="text-road-yellow font-semibold">Acompanhe cada quilômetro dessa jornada épica</span>
