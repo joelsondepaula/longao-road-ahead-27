@@ -44,7 +44,7 @@ const Contact = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-road-yellow font-semibold mb-4">{contact.value}</p>
-                  {contact.action && <Button variant="outline" size="sm" className="border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark transition-colors duration-300" onClick={() => contact.link && window.open(contact.link, '_blank')}>
+                  {contact.action && <Button variant="outline" size="sm" onClick={() => contact.link && window.open(contact.link, '_blank')} className="border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark transition-colors duration-300 bg-amber-50">
                       {contact.action}
                     </Button>}
                 </CardContent>
