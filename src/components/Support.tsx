@@ -12,7 +12,7 @@ const Support = () => {
   });
   const impactMetrics = [{
     key: 'impressions',
-    target: 500,
+    target: 50,
     suffix: 'K+',
     label: 'Impressões mensais',
     icon: <TrendingUp className="w-6 h-6" />,
@@ -42,7 +42,7 @@ const Support = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimatedCounts(prev => ({
-        impressions: Math.min(prev.impressions + 10, 500),
+        impressions: Math.min(prev.impressions + 1, 50),
         followers: Math.min(prev.followers + 1, 25),
         exposure: Math.min(prev.exposure + 1, 40),
         countries: Math.min(prev.countries + 1, 12)
