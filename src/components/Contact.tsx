@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Mail, Instagram, MessageCircle, Phone } from "lucide-react";
 const Contact = () => {
+  // WhatsApp contact info updated
   const contactInfo = [{
     icon: <Mail className="w-6 h-6" />,
     label: "Email",
