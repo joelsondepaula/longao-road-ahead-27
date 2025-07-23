@@ -6,7 +6,7 @@ const Stats = () => {
   const [animatedFollowers, setAnimatedFollowers] = useState(0);
   
   const targetKm = 8000;
-  const targetFollowers = 25000;
+  const targetFollowers = 5000;
 
   useEffect(() => {
     const animateNumber = (target: number, setter: (value: number) => void, duration: number = 2000) => {
