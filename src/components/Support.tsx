@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Crown, Award, Medal, Heart, Bike, Plane, Star, Shield, Zap, TrendingUp, Users, Globe, Camera, Target } from "lucide-react";
 import { useState, useEffect } from "react";
-
 const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
     impressions: 0,
@@ -11,42 +10,35 @@ const Support = () => {
     exposure: 0,
     countries: 0
   });
-
-  const impactMetrics = [
-    { 
-      key: 'impressions', 
-      target: 500, 
-      suffix: 'K+', 
-      label: 'Impressões mensais',
-      icon: <TrendingUp className="w-6 h-6" />,
-      color: 'from-trust-blue to-trust-blue/70'
-    },
-    { 
-      key: 'followers', 
-      target: 25, 
-      suffix: 'K+', 
-      label: 'Seguidores engajados',
-      icon: <Users className="w-6 h-6" />,
-      color: 'from-success-green to-success-green/70'
-    },
-    { 
-      key: 'exposure', 
-      target: 40, 
-      suffix: '', 
-      label: 'Dias de exposição',
-      icon: <Globe className="w-6 h-6" />,
-      color: 'from-energy-orange to-energy-orange/70'
-    },
-    { 
-      key: 'countries', 
-      target: 12, 
-      suffix: '', 
-      label: 'Países alcançados',
-      icon: <Target className="w-6 h-6" />,
-      color: 'from-premium-gold to-premium-gold/70'
-    }
-  ];
-
+  const impactMetrics = [{
+    key: 'impressions',
+    target: 500,
+    suffix: 'K+',
+    label: 'Impressões mensais',
+    icon: <TrendingUp className="w-6 h-6" />,
+    color: 'from-trust-blue to-trust-blue/70'
+  }, {
+    key: 'followers',
+    target: 25,
+    suffix: 'K+',
+    label: 'Seguidores engajados',
+    icon: <Users className="w-6 h-6" />,
+    color: 'from-success-green to-success-green/70'
+  }, {
+    key: 'exposure',
+    target: 40,
+    suffix: '',
+    label: 'Dias de exposição',
+    icon: <Globe className="w-6 h-6" />,
+    color: 'from-energy-orange to-energy-orange/70'
+  }, {
+    key: 'countries',
+    target: 12,
+    suffix: '',
+    label: 'Países alcançados',
+    icon: <Target className="w-6 h-6" />,
+    color: 'from-premium-gold to-premium-gold/70'
+  }];
   useEffect(() => {
     const interval = setInterval(() => {
       setAnimatedCounts(prev => ({
@@ -56,84 +48,104 @@ const Support = () => {
         countries: Math.min(prev.countries + 1, 12)
       }));
     }, 50);
-
     const timeout = setTimeout(() => {
       clearInterval(interval);
     }, 3000);
-
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
   }, []);
-
-  const sponsorshipLevels = [
-    {
-      level: "Ouro",
-      icon: <Crown className="w-8 h-8" />,
-      title: "Patrocinador Ouro",
-      price: "R$ 15.000",
-      originalPrice: "2 vagas disponíveis",
-      color: "premium-gold",
-      gradient: "from-premium-gold/20 via-road-yellow/15 to-premium-gold/20",
-      borderGradient: "from-premium-gold via-road-yellow to-premium-gold",
-      benefits: [
-        { icon: <Star className="w-4 h-4" />, text: "Logo destacado em todas as peças visuais" },
-        { icon: <Camera className="w-4 h-4" />, text: "Menções em posts diários nas redes sociais" },
-        { icon: <Zap className="w-4 h-4" />, text: "Entrevistas exclusivas durante a jornada" },
-        { icon: <Shield className="w-4 h-4" />, text: "Relatório completo de impacto e métricas" }
-      ],
-      highlight: true,
-      badge: "DESTAQUE"
-    },
-    {
-      level: "Prata", 
-      icon: <Star className="w-6 h-6" />,
-      title: "Patrocinador Prata",
-      price: "R$ 8.000",
-      originalPrice: "5 vagas disponíveis", 
-      color: "premium-silver",
-      gradient: "from-slate-200/20 via-slate-300/15 to-slate-200/20",
-      borderGradient: "from-slate-300 via-slate-400 to-slate-300",
-      benefits: [
-        { icon: <Star className="w-4 h-4" />, text: "Logo em materiais de divulgação" },
-        { icon: <Camera className="w-4 h-4" />, text: "Posts semanais nas redes sociais" },
-        { icon: <Shield className="w-4 h-4" />, text: "Relatório de métricas mensais" },
-        { icon: <Zap className="w-4 h-4" />, text: "Direitos de uso de imagens da jornada" }
-      ]
-    },
-    {
-      level: "Bronze",
-      icon: <Medal className="w-6 h-6" />,
-      title: "Patrocinador Bronze", 
-      price: "R$ 3.000",
-      originalPrice: "10 vagas disponíveis",
-      color: "premium-bronze",
-      gradient: "from-orange-200/20 via-orange-300/15 to-orange-200/20",
-      borderGradient: "from-orange-300 via-orange-400 to-orange-300",
-      benefits: [
-        { icon: <Star className="w-4 h-4" />, text: "Logo no site oficial" },
-        { icon: <Camera className="w-4 h-4" />, text: "Menções em posts quinzenais" },
-        { icon: <Shield className="w-4 h-4" />, text: "Relatório final da jornada" },
-        { icon: <Award className="w-4 h-4" />, text: "Certificado de apoio" }
-      ]
-    }
-  ];
-
-  const currentPartners = [
-    { name: "Seu Logo Aqui", category: "Equipamentos", icon: <Bike className="w-8 h-8" /> },
-    { name: "Sua Marca", category: "Nutrição", icon: <Heart className="w-8 h-8" /> },
-    { name: "Empresa Parceira", category: "Tecnologia", icon: <Zap className="w-8 h-8" /> },
-    { name: "Patrocinador", category: "Logística", icon: <Plane className="w-8 h-8" /> }
-  ];
-
-  return (
-    <section id="apoio" className="py-24 bg-gradient-to-br from-background via-slate-50 to-background relative overflow-hidden">
+  const sponsorshipLevels = [{
+    level: "Ouro",
+    icon: <Crown className="w-8 h-8" />,
+    title: "Patrocinador Ouro",
+    price: "R$ 15.000",
+    originalPrice: "2 vagas disponíveis",
+    color: "premium-gold",
+    gradient: "from-premium-gold/20 via-road-yellow/15 to-premium-gold/20",
+    borderGradient: "from-premium-gold via-road-yellow to-premium-gold",
+    benefits: [{
+      icon: <Star className="w-4 h-4" />,
+      text: "Logo destacado em todas as peças visuais"
+    }, {
+      icon: <Camera className="w-4 h-4" />,
+      text: "Menções em posts diários nas redes sociais"
+    }, {
+      icon: <Zap className="w-4 h-4" />,
+      text: "Entrevistas exclusivas durante a jornada"
+    }, {
+      icon: <Shield className="w-4 h-4" />,
+      text: "Relatório completo de impacto e métricas"
+    }],
+    highlight: true,
+    badge: "DESTAQUE"
+  }, {
+    level: "Prata",
+    icon: <Star className="w-6 h-6" />,
+    title: "Patrocinador Prata",
+    price: "R$ 8.000",
+    originalPrice: "5 vagas disponíveis",
+    color: "premium-silver",
+    gradient: "from-slate-200/20 via-slate-300/15 to-slate-200/20",
+    borderGradient: "from-slate-300 via-slate-400 to-slate-300",
+    benefits: [{
+      icon: <Star className="w-4 h-4" />,
+      text: "Logo em materiais de divulgação"
+    }, {
+      icon: <Camera className="w-4 h-4" />,
+      text: "Posts semanais nas redes sociais"
+    }, {
+      icon: <Shield className="w-4 h-4" />,
+      text: "Relatório de métricas mensais"
+    }, {
+      icon: <Zap className="w-4 h-4" />,
+      text: "Direitos de uso de imagens da jornada"
+    }]
+  }, {
+    level: "Bronze",
+    icon: <Medal className="w-6 h-6" />,
+    title: "Patrocinador Bronze",
+    price: "R$ 3.000",
+    originalPrice: "10 vagas disponíveis",
+    color: "premium-bronze",
+    gradient: "from-orange-200/20 via-orange-300/15 to-orange-200/20",
+    borderGradient: "from-orange-300 via-orange-400 to-orange-300",
+    benefits: [{
+      icon: <Star className="w-4 h-4" />,
+      text: "Logo no site oficial"
+    }, {
+      icon: <Camera className="w-4 h-4" />,
+      text: "Menções em posts quinzenais"
+    }, {
+      icon: <Shield className="w-4 h-4" />,
+      text: "Relatório final da jornada"
+    }, {
+      icon: <Award className="w-4 h-4" />,
+      text: "Certificado de apoio"
+    }]
+  }];
+  const currentPartners = [{
+    name: "Seu Logo Aqui",
+    category: "Equipamentos",
+    icon: <Bike className="w-8 h-8" />
+  }, {
+    name: "Sua Marca",
+    category: "Nutrição",
+    icon: <Heart className="w-8 h-8" />
+  }, {
+    name: "Empresa Parceira",
+    category: "Tecnologia",
+    icon: <Zap className="w-8 h-8" />
+  }, {
+    name: "Patrocinador",
+    category: "Logística",
+    icon: <Plane className="w-8 h-8" />
+  }];
+  return <section id="apoio" className="py-24 bg-gradient-to-br from-background via-slate-50 to-background relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fbbf24' fill-opacity='0.1'%3E%3Cpath d='M20 20c0-11.046-8.954-20-20-20v20h20z'/%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -159,18 +171,11 @@ const Support = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Button 
-                size="lg"
-                className="bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-2xl hover:scale-105 font-bold px-8 py-4 text-lg transition-all duration-300 group"
-              >
+              <Button size="lg" className="bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-2xl hover:scale-105 font-bold px-8 py-4 text-lg transition-all duration-300 group">
                 <Heart className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                 Fale Conosco
               </Button>
-              <Button 
-                variant="outline"
-                size="lg"
-                className="border-2 border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark font-bold px-8 py-4 text-lg transition-all duration-300 group"
-              >
+              <Button variant="outline" size="lg" className="border-2 border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark font-bold px-8 py-4 text-lg transition-all duration-300 group">
                 <Camera className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                 Press Kit
               </Button>
@@ -179,31 +184,22 @@ const Support = () => {
 
           {/* Enhanced Sponsorship Cards */}
           <div className="grid lg:grid-cols-3 gap-8 mb-20">
-            {sponsorshipLevels.map((level, index) => (
-              <Card 
-                key={index}
-                className={`
+            {sponsorshipLevels.map((level, index) => <Card key={index} className={`
                   group relative overflow-hidden transition-all duration-700 hover:scale-105 hover:-translate-y-3
-                  ${level.highlight 
-                    ? 'lg:scale-110 lg:-translate-y-4 border-2 shadow-2xl' 
-                    : 'border hover:shadow-xl'
-                  }
+                  ${level.highlight ? 'lg:scale-110 lg:-translate-y-4 border-2 shadow-2xl' : 'border hover:shadow-xl'}
                   bg-gradient-to-br ${level.gradient} backdrop-blur-sm
-                `}
-              >
+                `}>
                 {/* Animated border */}
                 <div className={`absolute inset-0 bg-gradient-to-r ${level.borderGradient} p-[2px] rounded-xl`}>
                   <div className="h-full w-full bg-background rounded-[10px]" />
                 </div>
 
                 {/* Highlight badge */}
-                {level.highlight && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                {level.highlight && <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
                     <Badge className="bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark font-bold px-4 py-1 text-sm shadow-lg">
                       {level.badge}
                     </Badge>
-                  </div>
-                )}
+                  </div>}
 
                 {/* Animated background effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-road-yellow/0 via-road-yellow/5 to-road-yellow/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
@@ -234,32 +230,24 @@ const Support = () => {
                 
                 <CardContent className="relative z-10">
                   <ul className="space-y-4 mb-8">
-                    {level.benefits.map((benefit, i) => (
-                      <li key={i} className="flex items-start gap-3 group/item">
+                    {level.benefits.map((benefit, i) => <li key={i} className="flex items-start gap-3 group/item">
                         <div className={`p-1 rounded-lg ${level.highlight ? 'bg-road-yellow/20 text-road-yellow' : 'bg-muted/50'} group-hover/item:scale-110 transition-transform duration-300`}>
                           {benefit.icon}
                         </div>
                         <span className="text-sm text-muted-foreground leading-relaxed font-medium">
                           {benefit.text}
                         </span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
                   
-                  <Button 
-                    className={`
+                  <Button className={`
                       w-full font-bold py-3 transition-all duration-300 group-hover:scale-105
-                      ${level.highlight 
-                        ? 'bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-xl' 
-                        : `bg-${level.color} text-white hover:opacity-90`
-                      }
-                    `}
-                  >
+                      ${level.highlight ? 'bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-xl' : `bg-${level.color} text-white hover:opacity-90`}
+                    `}>
                     Escolher Plano
                   </Button>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
 
           {/* Enhanced Current Partners */}
@@ -268,11 +256,7 @@ const Support = () => {
               Parceiros <span className="text-road-yellow">Atuais</span>
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-              {currentPartners.map((partner, index) => (
-                <Card 
-                  key={index}
-                  className="group p-6 hover:shadow-xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 bg-gradient-to-br from-background to-muted/20 border border-muted/30"
-                >
+              {currentPartners.map((partner, index) => <Card key={index} className="group p-6 hover:shadow-xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 bg-gradient-to-br from-background to-muted/20 border border-muted/30">
                   <div className="text-center">
                     <div className="w-full h-20 bg-gradient-to-br from-muted/30 to-muted/50 rounded-xl flex items-center justify-center mb-4 group-hover:from-road-yellow/20 group-hover:to-premium-gold/20 transition-all duration-300">
                       <div className="text-muted-foreground group-hover:text-road-yellow transition-colors duration-300">
@@ -286,8 +270,7 @@ const Support = () => {
                       {partner.category}
                     </div>
                   </div>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
 
@@ -306,11 +289,7 @@ const Support = () => {
             
             <CardContent className="relative z-10">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {impactMetrics.map((metric, index) => (
-                  <div 
-                    key={metric.key}
-                    className="text-center group"
-                  >
+                {impactMetrics.map((metric, index) => <div key={metric.key} className="text-center group">
                     <div className={`
                       inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 
                       bg-gradient-to-br ${metric.color} text-white
@@ -327,8 +306,7 @@ const Support = () => {
                     <div className="text-sm text-muted-foreground font-medium">
                       {metric.label}
                     </div>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </CardContent>
           </Card>
@@ -351,17 +329,10 @@ const Support = () => {
             
             <CardContent className="text-center relative z-10">
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="border-2 border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark font-bold transition-all duration-300"
-                >
+                <Button variant="outline" size="lg" className="border-2 border-road-yellow text-road-yellow hover:bg-road-yellow hover:text-asphalt-dark font-bold transition-all duration-300">
                   PIX: oreidolongao@gmail.com
                 </Button>
-                <Button 
-                  size="lg"
-                  className="bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-xl font-bold transition-all duration-300"
-                >
+                <Button size="lg" className="bg-gradient-to-r from-road-yellow to-premium-gold text-asphalt-dark hover:shadow-xl font-bold transition-all duration-300">
                   Fazer Doação
                 </Button>
               </div>
@@ -369,8 +340,6 @@ const Support = () => {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Support;
