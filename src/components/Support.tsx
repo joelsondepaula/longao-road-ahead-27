@@ -33,7 +33,7 @@ const Support = () => {
     color: 'from-energy-orange to-energy-orange/70'
   }, {
     key: 'countries',
-    target: 12,
+    target: 3,
     suffix: '',
     label: 'Países alcançados',
     icon: <Target className="w-6 h-6" />,
@@ -45,7 +45,7 @@ const Support = () => {
         impressions: Math.min(prev.impressions + 1, 50),
         followers: Math.min(prev.followers + 1, 5),
         exposure: Math.min(prev.exposure + 1, 40),
-        countries: Math.min(prev.countries + 1, 12)
+        countries: Math.min(prev.countries + 1, 3)
       }));
     }, 50);
     const timeout = setTimeout(() => {
