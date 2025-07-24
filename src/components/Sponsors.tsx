@@ -1,33 +1,65 @@
 import { Button } from "@/components/ui/button";
-import { Shield, Star, Award, Crown, Mail, Download } from "lucide-react";
+import { Shield, Star, Award, Crown, Mail, Download, Bike } from "lucide-react";
 const Sponsors = () => {
   const sponsorTiers = [{
-    title: "Patrocinador Ouro",
+    title: "Patrocínio Master",
+    subtitle: "Fornecimento de uma Bike Gravel",
+    icon: Bike,
+    color: "premium-gold",
+    bgGradient: "bg-gradient-to-br from-premium-gold/30 to-road-yellow/15",
+    borderColor: "border-premium-gold/40",
+    benefits: [
+      "Exposição de maior destaque: bike, uniforme, vídeos e conteúdo diário",
+      "Marca destacada como 'Bike oficial do desafio'",
+      "Direito de uso de imagem para campanhas da marca",
+      "Evidenciaremos a qualidade e resistência da bike",
+      "Versatilidade da gravel para cicloturismo e uso urbano"
+    ],
+    investment: "Fornecimento",
+    available: "EXCLUSIVO",
+    isExclusive: true
+  }, {
+    title: "Cota Ouro",
+    subtitle: "Passagem Aérea Ushuaia + João Pessoa/Recife",
     icon: Crown,
     color: "premium-gold",
     bgGradient: "bg-gradient-to-br from-premium-gold/20 to-road-yellow/10",
     borderColor: "border-premium-gold/30",
-    benefits: ["Logo destacado em todas as peças visuais", "Menções em posts diários nas redes sociais", "Entrevistas exclusivas durante a jornada", "Relatório completo de impacto e métricas"],
-    investment: "R$ 15.000",
-    available: 2
+    benefits: [
+      "Nome/logo da marca na camisa do desafio",
+      "Menções em posts semanais",
+      "Destaque em stories e agradecimentos",
+      "Menção em conteúdos de encerramento da jornada"
+    ],
+    investment: "Passagem Aérea",
+    available: "POPULAR"
   }, {
-    title: "Patrocinador Prata",
+    title: "Cota Prata",
+    subtitle: "Investimento único",
     icon: Star,
     color: "premium-silver",
     bgGradient: "bg-gradient-to-br from-premium-silver/20 to-muted/10",
     borderColor: "border-premium-silver/30",
-    benefits: ["Logo em materiais de divulgação", "Posts semanais nas redes sociais", "Relatório de métricas mensais", "Direitos de uso de imagens da jornada"],
-    investment: "R$ 8.000",
-    available: 5
+    benefits: [
+      "Marca estampada na camisa do desafio",
+      "Agradecimentos e menções pontuais em stories e reels",
+      "Inclusão em postagens de parceiros e apoiadores"
+    ],
+    investment: "R$ 2.000",
+    available: "5 vagas disponíveis"
   }, {
-    title: "Patrocinador Bronze",
+    title: "Cota Bronze",
+    subtitle: "Investimento único",
     icon: Award,
     color: "premium-bronze",
     bgGradient: "bg-gradient-to-br from-premium-bronze/20 to-muted/10",
     borderColor: "border-premium-bronze/30",
-    benefits: ["Logo no site oficial", "Menções em posts quinzenais", "Relatório final da jornada", "Certificado de apoio"],
-    investment: "R$ 3.000",
-    available: 10
+    benefits: [
+      "Menção em postagens de agradecimento",
+      "Nome reconhecido na descrição de vídeos"
+    ],
+    investment: "R$ 1.000",
+    available: "10 vagas disponíveis"
   }];
   const currentPartners = [{
     name: "Seu Logo Aqui",
@@ -62,11 +94,53 @@ const Sponsors = () => {
           </div>
         </div>
 
-        {/* Sponsor Tiers */}
+        {/* Patrocínio Master - Destaque Especial */}
+        <div className="mb-12">
+          <div className="max-w-4xl mx-auto">
+            <div className={`p-8 rounded-2xl ${sponsorTiers[0].bgGradient} border-2 ${sponsorTiers[0].borderColor} hover:shadow-xl transition-all duration-300 group relative overflow-hidden`}>
+              <div className="absolute top-4 right-4 bg-premium-gold text-asphalt-dark text-xs font-bold px-3 py-1 rounded-full">
+                EXCLUSIVO
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-8 items-center">
+                <div className="text-center md:text-left">
+                  <div className={`inline-flex items-center justify-center w-20 h-20 rounded-xl bg-${sponsorTiers[0].color}/20 mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <Bike className={`w-10 h-10 text-${sponsorTiers[0].color}`} />
+                  </div>
+                  <h3 className="text-2xl font-heading font-bold text-foreground mb-2">
+                    {sponsorTiers[0].title}
+                  </h3>
+                  <div className={`text-4xl font-heading font-bold text-${sponsorTiers[0].color} mb-2`}>
+                    {sponsorTiers[0].investment}
+                  </div>
+                  <div className="text-lg text-muted-foreground mb-4">
+                    {sponsorTiers[0].subtitle}
+                  </div>
+                  <Button className={`bg-${sponsorTiers[0].color} text-asphalt-dark hover:bg-${sponsorTiers[0].color}/90 font-semibold px-8 py-3`}>
+                    Escolher Plano
+                  </Button>
+                </div>
+                
+                <div>
+                  <ul className="space-y-4">
+                    {sponsorTiers[0].benefits.map((benefit, idx) => <li key={idx} className="flex items-start">
+                        <Shield className={`w-5 h-5 text-${sponsorTiers[0].color} mt-1 mr-3 flex-shrink-0`} />
+                        <span className="text-muted-foreground leading-relaxed">
+                          {benefit}
+                        </span>
+                      </li>)}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Outras Cotas */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {sponsorTiers.map((tier, index) => <div key={tier.title} className={`p-8 rounded-2xl ${tier.bgGradient} border-2 ${tier.borderColor} hover:shadow-xl transition-all duration-300 group relative overflow-hidden`}>
+          {sponsorTiers.slice(1).map((tier, index) => <div key={tier.title} className={`p-8 rounded-2xl ${tier.bgGradient} border-2 ${tier.borderColor} hover:shadow-xl transition-all duration-300 group relative overflow-hidden`}>
               {index === 0 && <div className="absolute top-4 right-4 bg-premium-gold text-asphalt-dark text-xs font-bold px-3 py-1 rounded-full">
-                  DESTAQUE
+                  POPULAR
                 </div>}
               
               <div className="text-center mb-6">
@@ -80,7 +154,10 @@ const Sponsors = () => {
                   {tier.investment}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {tier.available} vagas disponíveis
+                  {tier.subtitle}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {tier.available}
                 </div>
               </div>
 
