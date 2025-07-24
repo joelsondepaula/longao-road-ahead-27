@@ -57,6 +57,33 @@ const Support = () => {
     };
   }, []);
   const sponsorshipLevels = [{
+    level: "Master",
+    icon: <Bike className="w-8 h-8" />,
+    title: "Patrocínio Master",
+    price: "Fornecimento",
+    originalPrice: "de uma Bike Gravel",
+    color: "premium-gold",
+    gradient: "from-premium-gold/30 via-road-yellow/20 to-premium-gold/30",
+    borderGradient: "from-premium-gold via-road-yellow to-premium-gold",
+    benefits: [{
+      icon: <Star className="w-4 h-4" />,
+      text: "Exposição de maior destaque: bike, uniforme, vídeos e conteúdo diário"
+    }, {
+      icon: <Award className="w-4 h-4" />,
+      text: "Marca destacada como 'Bike oficial do desafio'"
+    }, {
+      icon: <Camera className="w-4 h-4" />,
+      text: "Direito de uso de imagem para campanhas da marca"
+    }, {
+      icon: <Shield className="w-4 h-4" />,
+      text: "Evidenciaremos a qualidade e resistência da bike"
+    }, {
+      icon: <Zap className="w-4 h-4" />,
+      text: "Versatilidade da gravel para cicloturismo e uso urbano"
+    }],
+    highlight: true,
+    badge: "EXCLUSIVO"
+  }, {
     level: "Ouro",
     icon: <Crown className="w-8 h-8" />,
     title: "Cota Ouro",
@@ -70,16 +97,16 @@ const Support = () => {
       text: "Nome/logo da marca na camisa do desafio"
     }, {
       icon: <Camera className="w-4 h-4" />,
-      text: "Menção em posts semanais"
+      text: "Menções em posts semanais"
     }, {
       icon: <Zap className="w-4 h-4" />,
       text: "Destaque em stories e agradecimentos"
     }, {
       icon: <Shield className="w-4 h-4" />,
-      text: "Menção em conteúdos de equipos e testing da jornada"
+      text: "Menção em conteúdos de encerramento da jornada"
     }],
-    highlight: true,
-    badge: "DESTAQUE"
+    highlight: false,
+    badge: "POPULAR"
   }, {
     level: "Prata",
     icon: <Star className="w-6 h-6" />,
@@ -113,10 +140,7 @@ const Support = () => {
       text: "Menção em postagens de agradecimento"
     }, {
       icon: <Camera className="w-4 h-4" />,
-      text: "Apoio reconhecido nas redes sociais"
-    }, {
-      icon: <Shield className="w-4 h-4" />,
-      text: "Presença como apoiador na descrição de vídeos"
+      text: "Nome reconhecido na descrição de vídeos"
     }]
   }];
   const currentPartners = [{
