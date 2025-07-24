@@ -59,70 +59,64 @@ const Support = () => {
   const sponsorshipLevels = [{
     level: "Ouro",
     icon: <Crown className="w-8 h-8" />,
-    title: "Patrocinador Ouro",
-    price: "R$ 15.000",
-    originalPrice: "2 vagas disponíveis",
+    title: "Cota Ouro",
+    price: "Passagem Aérea",
+    originalPrice: "Ushuaia + João Pessoa/Recife",
     color: "premium-gold",
     gradient: "from-premium-gold/20 via-road-yellow/15 to-premium-gold/20",
     borderGradient: "from-premium-gold via-road-yellow to-premium-gold",
     benefits: [{
       icon: <Star className="w-4 h-4" />,
-      text: "Logo destacado em todas as peças visuais"
+      text: "Nome/logo da marca na camisa do desafio"
     }, {
       icon: <Camera className="w-4 h-4" />,
-      text: "Menções em posts diários nas redes sociais"
+      text: "Menção em posts semanais"
     }, {
       icon: <Zap className="w-4 h-4" />,
-      text: "Entrevistas exclusivas durante a jornada"
+      text: "Destaque em stories e agradecimentos"
     }, {
       icon: <Shield className="w-4 h-4" />,
-      text: "Relatório completo de impacto e métricas"
+      text: "Menção em conteúdos de equipos e testing da jornada"
     }],
     highlight: true,
     badge: "DESTAQUE"
   }, {
     level: "Prata",
     icon: <Star className="w-6 h-6" />,
-    title: "Patrocinador Prata",
-    price: "R$ 8.000",
-    originalPrice: "5 vagas disponíveis",
+    title: "Cota Prata",
+    price: "R$ 2.000",
+    originalPrice: "Investimento único",
     color: "premium-silver",
     gradient: "from-slate-200/20 via-slate-300/15 to-slate-200/20",
     borderGradient: "from-slate-300 via-slate-400 to-slate-300",
     benefits: [{
       icon: <Star className="w-4 h-4" />,
-      text: "Logo em materiais de divulgação"
+      text: "Marca estampada na camisa do desafio"
     }, {
       icon: <Camera className="w-4 h-4" />,
-      text: "Posts semanais nas redes sociais"
+      text: "Agradecimentos e menções pontuais em stories e reels"
     }, {
       icon: <Shield className="w-4 h-4" />,
-      text: "Relatório de métricas mensais"
-    }, {
-      icon: <Zap className="w-4 h-4" />,
-      text: "Direitos de uso de imagens da jornada"
+      text: "Inclusão em postagens de parceiros e apoiadores"
     }]
   }, {
     level: "Bronze",
     icon: <Medal className="w-6 h-6" />,
-    title: "Patrocinador Bronze",
-    price: "R$ 3.000",
-    originalPrice: "10 vagas disponíveis",
+    title: "Cota Bronze",
+    price: "R$ 1.000",
+    originalPrice: "Investimento único",
     color: "premium-bronze",
     gradient: "from-orange-200/20 via-orange-300/15 to-orange-200/20",
     borderGradient: "from-orange-300 via-orange-400 to-orange-300",
     benefits: [{
       icon: <Star className="w-4 h-4" />,
-      text: "Logo no site oficial"
+      text: "Menção em postagens de agradecimento"
     }, {
       icon: <Camera className="w-4 h-4" />,
-      text: "Menções em posts quinzenais"
+      text: "Apoio reconhecido nas redes sociais"
     }, {
       icon: <Shield className="w-4 h-4" />,
-      text: "Relatório final da jornada"
-    }, {
-      icon: <Award className="w-4 h-4" />,
-      text: "Certificado de apoio"
+      text: "Presença como apoiador na descrição de vídeos"
     }]
   }];
   const currentPartners = [{
