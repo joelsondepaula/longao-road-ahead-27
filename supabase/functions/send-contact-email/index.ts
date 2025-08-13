@@ -28,12 +28,11 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log('Received contact form submission:', { name, email, phone, subject });
 
-    // Send email to both specified addresses
-    const recipients = ["oreidolongao@gmail.com", "reidolongao@gmail.com"];
-    
+    // Send email - For now sending only to verified email due to Resend requirements
+    // To send to multiple recipients, verify your domain at https://resend.com/domains
     const emailResponse = await resend.emails.send({
-      from: "O Rei do Longão <onboarding@resend.dev>",
-      to: recipients,
+      from: "O Rei do Longão <oreidolongao@gmail.com>",
+      to: ["oreidolongao@gmail.com"],
       subject: subject || `Nova mensagem de contato de ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
