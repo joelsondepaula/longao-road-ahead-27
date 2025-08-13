@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Shield, Star, Award, Crown, Mail, Download, Bike } from "lucide-react";
+import ContactModal from "./ContactModal";
 const Sponsors = () => {
   const sponsorTiers = [{
     title: "Patrocínio Master",
@@ -68,11 +69,12 @@ const Sponsors = () => {
             Mais de <strong>5.000 pessoas</strong> acompanhando cada pedalada.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold px-8 py-4 text-lg">
-              <Mail className="mr-2 h-5 w-5" />
-              Fale Conosco
-            </Button>
-            
+            <ContactModal defaultContactType="patrocinio">
+              <Button size="lg" className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold px-8 py-4 text-lg">
+                <Mail className="mr-2 h-5 w-5" />
+                Fale Conosco
+              </Button>
+            </ContactModal>
           </div>
         </div>
 
@@ -98,9 +100,11 @@ const Sponsors = () => {
                   <div className="text-lg text-muted-foreground mb-4">
                     {sponsorTiers[0].subtitle}
                   </div>
-                  <Button className={`bg-${sponsorTiers[0].color} text-asphalt-dark hover:bg-${sponsorTiers[0].color}/90 font-semibold px-8 py-3`}>
-                    Escolher Plano
-                  </Button>
+                  <ContactModal defaultContactType="patrocinio">
+                    <Button className={`bg-${sponsorTiers[0].color} text-asphalt-dark hover:bg-${sponsorTiers[0].color}/90 font-semibold px-8 py-3`}>
+                      Escolher Plano
+                    </Button>
+                  </ContactModal>
                 </div>
                 
                 <div>
@@ -152,9 +156,11 @@ const Sponsors = () => {
                   </li>)}
               </ul>
 
-              <Button className={`w-full bg-${tier.color} text-asphalt-dark hover:bg-${tier.color}/90 font-semibold`}>
-                Escolher Plano
-              </Button>
+              <ContactModal defaultContactType="patrocinio">
+                <Button className={`w-full bg-${tier.color} text-asphalt-dark hover:bg-${tier.color}/90 font-semibold`}>
+                  Escolher Plano
+                </Button>
+              </ContactModal>
             </div>)}
         </div>
 

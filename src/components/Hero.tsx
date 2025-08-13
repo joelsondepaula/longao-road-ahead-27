@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Youtube, Instagram, Activity, Play, ExternalLink } from "lucide-react";
 import heroImage from "@/assets/hero-road.jpg";
 import tiktokLogo from "@/assets/tiktok-logo.svg";
+import ContactModal from "./ContactModal";
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -88,13 +89,14 @@ const Hero = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button 
-            size="lg" 
-            className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-lg px-10 py-6 transition-all duration-300 group"
-            onClick={() => scrollToSection('patrocinadores')}
-          >
-            <span className="group-hover:scale-105 transition-transform">Seja um Patrocinador</span>
-          </Button>
+          <ContactModal defaultContactType="patrocinio">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-lg px-10 py-6 transition-all duration-300 group"
+            >
+              <span className="group-hover:scale-105 transition-transform">Seja um Patrocinador</span>
+            </Button>
+          </ContactModal>
           <Button 
             variant="outline" 
             size="lg"
