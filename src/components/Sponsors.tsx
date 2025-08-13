@@ -8,13 +8,7 @@ const Sponsors = () => {
     color: "premium-gold",
     bgGradient: "bg-gradient-to-br from-premium-gold/30 to-road-yellow/15",
     borderColor: "border-premium-gold/40",
-    benefits: [
-      "Exposição de maior destaque: bike, uniforme, vídeos e conteúdo diário",
-      "Marca destacada como 'Bike oficial do desafio'",
-      "Direito de uso de imagem para campanhas da marca",
-      "Evidenciaremos a qualidade e resistência da bike",
-      "Versatilidade da gravel para cicloturismo e uso urbano"
-    ],
+    benefits: ["Exposição de maior destaque: bike, uniforme, vídeos e conteúdo diário", "Marca destacada como 'Bike oficial do desafio'", "Direito de uso de imagem para campanhas da marca", "Evidenciaremos a qualidade e resistência da bike", "Versatilidade da gravel para cicloturismo e uso urbano"],
     investment: "Fornecimento",
     available: "EXCLUSIVO",
     isExclusive: true
@@ -25,12 +19,7 @@ const Sponsors = () => {
     color: "premium-gold",
     bgGradient: "bg-gradient-to-br from-premium-gold/20 to-road-yellow/10",
     borderColor: "border-premium-gold/30",
-    benefits: [
-      "Nome/logo da marca na camisa do desafio",
-      "Menções em posts semanais",
-      "Destaque em stories e agradecimentos",
-      "Menção em conteúdos de encerramento da jornada"
-    ],
+    benefits: ["Nome/logo da marca na camisa do desafio", "Menções em posts semanais", "Destaque em stories e agradecimentos", "Menção em conteúdos de encerramento da jornada"],
     investment: "Passagem Aérea",
     available: "POPULAR"
   }, {
@@ -40,11 +29,7 @@ const Sponsors = () => {
     color: "premium-silver",
     bgGradient: "bg-gradient-to-br from-premium-silver/20 to-muted/10",
     borderColor: "border-premium-silver/30",
-    benefits: [
-      "Marca estampada na camisa do desafio",
-      "Agradecimentos e menções pontuais em stories e reels",
-      "Inclusão em postagens de parceiros e apoiadores"
-    ],
+    benefits: ["Marca estampada na camisa do desafio", "Agradecimentos e menções pontuais em stories e reels", "Inclusão em postagens de parceiros e apoiadores"],
     investment: "R$ 2.000",
     available: "5 vagas disponíveis"
   }, {
@@ -54,10 +39,7 @@ const Sponsors = () => {
     color: "premium-bronze",
     bgGradient: "bg-gradient-to-br from-premium-bronze/20 to-muted/10",
     borderColor: "border-premium-bronze/30",
-    benefits: [
-      "Menção em postagens de agradecimento",
-      "Nome reconhecido na descrição de vídeos"
-    ],
+    benefits: ["Menção em postagens de agradecimento", "Nome reconhecido na descrição de vídeos"],
     investment: "R$ 1.000",
     available: "10 vagas disponíveis"
   }];
@@ -180,14 +162,12 @@ const Sponsors = () => {
         <div className="text-center">
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {currentPartners.map((partner, index) => (
-              <div key={index} className="p-6 bg-card rounded-xl border border-border hover:shadow-lg transition-all duration-300">
+            {currentPartners.map((partner, index) => <div key={index} className="p-6 bg-card rounded-xl border border-border hover:shadow-lg transition-all duration-300">
                 <div className="text-center">
                   <div className="text-lg font-semibold text-foreground mb-2">{partner.name}</div>
                   <div className="text-sm text-muted-foreground">{partner.category}</div>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
 
@@ -216,9 +196,7 @@ const Sponsors = () => {
               </div>
             </div>
             <div>
-              <div className="text-2xl font-heading font-bold text-energy-orange mb-1">
-                40
-              </div>
+              <div className="text-2xl font-heading font-bold text-energy-orange mb-1">50</div>
               <div className="text-sm text-muted-foreground">
                 Dias de exposição
               </div>
