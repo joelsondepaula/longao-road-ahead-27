@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Crown, Award, Medal, Heart, Bike, Plane, Star, Shield, Zap, TrendingUp, Users, Globe, Camera, Target } from "lucide-react";
 import { useState, useEffect } from "react";
-import SponsorshipForm from "./SponsorshipForm";
+
 const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
     impressions: 0,
@@ -267,10 +267,6 @@ const Support = () => {
           </div>
         </div>
 
-        {/* Sponsorship Form */}
-        <div className="max-w-4xl mx-auto">
-          <SponsorshipForm />
-        </div>
       </div>
     </section>;
 };
