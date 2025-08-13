@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Crown, Award, Medal, Heart, Bike, Plane, Star, Shield, Zap, TrendingUp, Users, Globe, Camera, Target } from "lucide-react";
 import { useState, useEffect } from "react";
+import SponsorshipForm from "./SponsorshipForm";
 const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
     impressions: 0,
@@ -167,7 +168,109 @@ const Support = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
+            Faça Parte desta <span className="text-road-yellow">Jornada</span>
+          </h2>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Seja um patrocinador e potencialize sua marca através de uma aventura épica que 
+            inspirará milhares de pessoas pelo Brasil e além.
+          </p>
+        </div>
+
+        {/* Impact Metrics */}
+        <div className="grid md:grid-cols-4 gap-6 mb-16">
+          {impactMetrics.map((metric, index) => (
+            <Card key={index} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg group hover:shadow-xl transition-all duration-300">
+              <CardContent className="p-6 text-center">
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${metric.color} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="text-white">
+                    {metric.icon}
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-2">
+                  {animatedCounts[metric.key as keyof typeof animatedCounts]}{metric.suffix}
+                </div>
+                <p className="text-muted-foreground font-medium">{metric.label}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Sponsorship Levels */}
+        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-6 mb-16">
+          {sponsorshipLevels.map((level, index) => (
+            <Card 
+              key={index} 
+              className={`relative overflow-hidden group transition-all duration-300 hover:scale-105 ${
+                level.highlight 
+                  ? 'border-2 border-dashed border-road-yellow shadow-2xl' 
+                  : 'border border-muted hover:border-road-yellow/50'
+              }`}
+            >
+              {level.badge && (
+                <div className="absolute -top-2 -right-2 z-10">
+                  <Badge className={`${level.highlight ? 'bg-road-yellow text-asphalt-dark' : 'bg-premium-gold text-white'} font-bold`}>
+                    {level.badge}
+                  </Badge>
+                </div>
+              )}
+              
+              <div className={`absolute inset-0 bg-gradient-to-br ${level.gradient} opacity-50`} />
+              
+              <CardHeader className="relative z-10 text-center">
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${level.borderGradient} p-0.5 mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="w-full h-full bg-white rounded-xl flex items-center justify-center">
+                    <div className={`text-${level.color}`}>
+                      {level.icon}
+                    </div>
+                  </div>
+                </div>
+                <CardTitle className="text-foreground text-xl">{level.title}</CardTitle>
+                <div className="space-y-1">
+                  <div className={`text-2xl font-bold text-${level.color}`}>{level.price}</div>
+                  <div className="text-sm text-muted-foreground">{level.originalPrice}</div>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="relative z-10 space-y-3">
+                {level.benefits.map((benefit, benefitIndex) => (
+                  <div key={benefitIndex} className="flex items-start gap-3">
+                    <div className={`text-${level.color} mt-0.5 flex-shrink-0`}>
+                      {benefit.icon}
+                    </div>
+                    <p className="text-sm text-foreground leading-relaxed">{benefit.text}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Current Partners */}
+        <div className="mb-16">
+          <h3 className="text-2xl font-bold text-center mb-8">
+            Parceiros <span className="text-road-yellow">Atuais</span>
+          </h3>
+          <div className="grid md:grid-cols-4 gap-6">
+            {currentPartners.map((partner, index) => (
+              <Card key={index} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg group hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-6 text-center">
+                  <div className="text-road-yellow mb-3 group-hover:scale-110 transition-transform duration-300">
+                    {partner.icon}
+                  </div>
+                  <h4 className="font-semibold text-foreground">{partner.name}</h4>
+                  <p className="text-sm text-muted-foreground">{partner.category}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Sponsorship Form */}
+        <div className="max-w-4xl mx-auto">
+          <SponsorshipForm />
+        </div>
       </div>
     </section>;
 };
