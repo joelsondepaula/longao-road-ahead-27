@@ -31,8 +31,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Send email - For now sending only to verified email due to Resend requirements
     // To send to multiple recipients, verify your domain at https://resend.com/domains
     const emailResponse = await resend.emails.send({
-      from: "O Rei do Longão <oreidolongao@gmail.com>",
-      to: ["oreidolongao@gmail.com"],
+      from: "O Rei do Longão <noreply@oreidolongao.com.br>",
+      to: ["reidolongao@gmail.com", "oreidolongao@gmail.com"],
       subject: subject || `Nova mensagem de contato de ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
