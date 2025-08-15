@@ -61,11 +61,11 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-road-white mb-6 leading-tight px-2">
+        <h1 className="text-2xl sm:text-3xl md:text-6xl lg:text-7xl font-bold text-road-white mb-4 sm:mb-6 leading-tight px-2 sm:px-4">
           Do ponto mais oriental das <span className="text-road-yellow">Américas</span> ao <span className="text-road-yellow">fim do mundo</span>
         </h1>
         
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-road-white/90 mb-8 max-w-4xl mx-auto leading-relaxed px-4">
+        <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-road-white/90 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed px-4">
           Uma jornada de mais de <strong className="text-road-yellow">8.000 km</strong>, de João Pessoa até Ushuaia – 
           pedalando 200 km por dia, cruzando países e paisagens extremas, para provar que os limites estão apenas na nossa mente.
         </p>

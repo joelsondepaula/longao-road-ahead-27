@@ -39,15 +39,15 @@ const Navigation = () => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-asphalt-dark/95 backdrop-blur-sm shadow-lg' 
-        : 'bg-transparent'
+        ? 'bg-asphalt-dark/98 backdrop-blur-md shadow-lg' 
+        : 'bg-asphalt-dark/20 backdrop-blur-sm'
     }`}>
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-2 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Bike className="w-8 h-8 text-road-yellow" />
-            <span className="text-road-white font-bold text-xl">
+          <div className="flex items-center space-x-2 flex-shrink-0">
+            <Bike className="w-6 h-6 sm:w-8 sm:h-8 text-road-yellow flex-shrink-0" />
+            <span className="text-road-white font-bold text-sm sm:text-xl whitespace-nowrap">
               O Rei do <span className="text-road-yellow">Longão</span>
             </span>
           </div>
