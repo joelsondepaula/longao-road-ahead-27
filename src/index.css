@@ -152,6 +152,12 @@
     animation: fade-in 0.6s ease-out forwards;
   }
 
+  /* Melhorar performance de scroll */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
+  }
+
   /* Responsividade mobile melhorada */
   @media (max-width: 768px) {
     .container {

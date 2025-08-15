@@ -71,7 +71,7 @@ const Hero = () => {
         </p>
 
         {/* Stats Preview */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-12 px-4 max-w-2xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 px-4 max-w-2xl mx-auto">
           <div className="bg-black/30 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-4 border border-road-white/20">
             <div className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-road-yellow">
               <span className="text-sm sm:text-lg md:text-xl text-road-white/70 font-normal">~</span>8.000km
@@ -88,7 +88,7 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 px-4">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 px-4">
           <ContactModal defaultContactType="patrocinio">
             <Button 
               size="lg" 

@@ -55,6 +55,13 @@ const ContactModal = ({ children, defaultContactType = "" }: ContactModalProps) 
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    
+    // Show immediate feedback
+    toast({
+      title: "Enviando mensagem...",
+      description: "Por favor, aguarde.",
+    });
+
     try {
       const emailData = {
         ...data,

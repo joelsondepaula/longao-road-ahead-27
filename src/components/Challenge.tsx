@@ -57,7 +57,7 @@ const Challenge = () => {
     label: "Relatos em tempo real",
     color: "bg-gradient-to-r from-premium-gold/20 to-energy-orange/20 border-premium-gold/40"
   }];
-  return <section id="desafio" className="py-24 bg-gradient-to-br from-asphalt-dark via-slate-900 to-asphalt-dark text-road-white relative overflow-hidden">
+  return <section id="desafio" className="py-16 bg-gradient-to-br from-asphalt-dark via-slate-900 to-asphalt-dark text-road-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -68,7 +68,7 @@ const Challenge = () => {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-7xl mx-auto bg-slate-950">
           {/* Header Section */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-6 animate-fade-in">
               <div className="w-12 h-1 bg-gradient-to-r from-transparent to-road-yellow rounded-full" />
               <span className="text-road-yellow font-semibold text-lg tracking-wider">EXPEDIÇÃO ÉPICA</span>
@@ -87,7 +87,7 @@ const Challenge = () => {
           </div>
 
           {/* Enhanced Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {stats.map((stat, index) => <Card key={index} className={`
                   group relative overflow-hidden transition-all duration-500 hover:scale-105 hover:-translate-y-2
                   ${stat.highlight ? 'md:col-span-2 lg:col-span-1 bg-gradient-to-br from-success-green/10 to-trust-blue/10 border-2 border-road-yellow/50' : 'bg-gradient-to-br from-road-white/5 to-road-white/10 border border-road-yellow/30 hover:border-road-yellow/60'}
@@ -175,7 +175,7 @@ const Challenge = () => {
           </div>
 
           {/* Call to Action */}
-          <div className="text-center mt-20 bg-slate-900">
+          <div className="text-center mt-12 bg-slate-900">
             <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-road-yellow/20 to-premium-gold/20 border border-road-yellow/40 rounded-full">
               <Bike className="w-5 h-5 text-road-yellow animate-pulse" />
               <span className="text-road-yellow font-semibold">Acompanhe cada quilômetro dessa jornada épica</span>

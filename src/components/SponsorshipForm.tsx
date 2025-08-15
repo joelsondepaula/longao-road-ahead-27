@@ -41,6 +41,13 @@ const SponsorshipForm = () => {
 
   const onSubmit = async (data: SponsorshipFormData) => {
     setIsSubmitting(true);
+    
+    // Show immediate feedback
+    toast({
+      title: "Enviando proposta...",
+      description: "Por favor, aguarde.",
+    });
+
     try {
       const emailData = {
         ...data,
