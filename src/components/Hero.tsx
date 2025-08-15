@@ -61,38 +61,38 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-6xl mx-auto">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-road-white mb-6 leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-road-white mb-6 leading-tight px-2">
           Do ponto mais oriental das <span className="text-road-yellow">Américas</span> ao <span className="text-road-yellow">fim do mundo</span>
         </h1>
         
-        <p className="text-lg md:text-xl lg:text-2xl text-road-white/90 mb-8 max-w-4xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-road-white/90 mb-8 max-w-4xl mx-auto leading-relaxed px-4">
           Uma jornada de mais de <strong className="text-road-yellow">8.000 km</strong>, de João Pessoa até Ushuaia – 
           pedalando 200 km por dia, cruzando países e paisagens extremas, para provar que os limites estão apenas na nossa mente.
         </p>
 
         {/* Stats Preview */}
-        <div className="flex flex-wrap justify-center gap-6 mb-12">
-          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
-            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">
-              <span className="text-lg md:text-xl text-road-white/70 font-normal">~</span>8.000km
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-12 px-4 max-w-2xl mx-auto">
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-4 border border-road-white/20">
+            <div className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-road-yellow">
+              <span className="text-sm sm:text-lg md:text-xl text-road-white/70 font-normal">~</span>8.000km
             </div>
-            <div className="text-sm text-road-white/80 uppercase tracking-wider">Distância Total</div>
+            <div className="text-xs sm:text-sm text-road-white/80 uppercase tracking-wider">Distância Total</div>
           </div>
-          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
-            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">50 - 60 dias</div>
-            <div className="text-sm text-road-white/80 uppercase tracking-wider">Jornada</div>
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-4 border border-road-white/20">
+            <div className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-road-yellow">50 - 60 dias</div>
+            <div className="text-xs sm:text-sm text-road-white/80 uppercase tracking-wider">Jornada</div>
           </div>
-          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-6 py-4 border border-road-white/20">
-            <div className="text-2xl md:text-3xl font-heading font-bold text-road-yellow">3 países</div>
-            <div className="text-sm text-road-white/80 uppercase tracking-wider">Atravessados</div>
+          <div className="bg-black/30 backdrop-blur-sm rounded-xl px-4 sm:px-6 py-4 border border-road-white/20">
+            <div className="text-xl sm:text-2xl md:text-3xl font-heading font-bold text-road-yellow">3 países</div>
+            <div className="text-xs sm:text-sm text-road-white/80 uppercase tracking-wider">Atravessados</div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 px-4">
           <ContactModal defaultContactType="patrocinio">
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-lg px-10 py-6 transition-all duration-300 group"
+              className="w-full sm:w-auto bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 transition-all duration-300 group"
             >
               <span className="group-hover:scale-105 transition-transform">Seja um Patrocinador</span>
             </Button>
@@ -100,7 +100,7 @@ const Hero = () => {
           <Button 
             variant="outline" 
             size="lg"
-            className="bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-lg px-10 py-6 transition-all duration-300"
+            className="w-full sm:w-auto bg-gradient-to-r from-premium-gold to-road-yellow text-asphalt-dark hover:shadow-premium font-semibold text-base sm:text-lg px-6 sm:px-10 py-4 sm:py-6 transition-all duration-300"
             onClick={() => scrollToSection('desafio')}
           >
             Conheça a jornada
@@ -118,14 +118,14 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-2xl mx-auto px-4">
             {socialLinks.map((social, index) => (
               <a
                 key={social.name}
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group relative flex items-center gap-3 px-4 py-3 bg-black/30 backdrop-blur-sm rounded-xl border border-road-white/20 ${social.bgColor} transition-all duration-300 hover:scale-105 hover:border-road-white/40 ${
+                className={`group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 bg-black/30 backdrop-blur-sm rounded-xl border border-road-white/20 ${social.bgColor} transition-all duration-300 hover:scale-105 hover:border-road-white/40 ${
                   social.featured ? 'ring-2 ring-road-yellow/50' : ''
                 }`}
                 style={{
@@ -133,7 +133,7 @@ const Hero = () => {
                 }}
               >
                 <social.icon className={`h-5 w-5 ${social.color} transition-colors duration-200`} />
-                <span className="text-road-white font-medium text-sm group-hover:text-road-yellow transition-colors duration-200">
+                <span className="text-road-white font-medium text-xs sm:text-sm group-hover:text-road-yellow transition-colors duration-200">
                   {social.name}
                 </span>
                 <ExternalLink className="h-3 w-3 text-road-white/60 group-hover:text-road-white transition-colors duration-200" />
