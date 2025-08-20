@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Crown, Award, Medal, Heart, Bike, Plane, Star, Shield, Zap, TrendingUp, Users, Globe, Camera, Target } from "lucide-react";
 import { useState, useEffect } from "react";
 import hostdimeLogo from "@/assets/hostdime-logo.svg";
-import telyLogo from "@/assets/tely-logo-new.png";
+import telyLogo from "@/assets/tely-logo-final.png";
 
 const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
@@ -153,7 +153,7 @@ const Support = () => {
   }, {
     name: "Tely",
     category: "Tecnologia",
-    logo: "/lovable-uploads/6f725cd1-fb13-4f87-8bf5-e5cc554ea459.png"
+    logo: telyLogo
   }, {
     name: "Empresa Parceira",
     category: "Tecnologia",
