@@ -153,7 +153,7 @@ const Support = () => {
   }, {
     name: "Tely",
     category: "Tecnologia",
-    logo: telyLogo
+    logo: "/lovable-uploads/a91a77d7-96bc-4313-adb1-dc3250923feb.png"
   }, {
     name: "Empresa Parceira",
     category: "Tecnologia",
