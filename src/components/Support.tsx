@@ -263,7 +263,9 @@ const Support = () => {
                       <img 
                         src={partner.logo} 
                         alt={`${partner.name} logo`}
-                        className="max-h-12 max-w-full object-contain"
+                        className={`max-h-12 max-w-full object-contain ${
+                          partner.name === 'Tely' ? 'bg-gray-100 p-2 rounded' : ''
+                        }`}
                       />
                     ) : (
                       <div className="text-road-yellow">
