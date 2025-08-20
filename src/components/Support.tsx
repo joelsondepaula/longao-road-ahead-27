@@ -272,8 +272,6 @@ const Support = () => {
                       </div>
                     )}
                   </div>
-                  <h4 className="font-semibold text-foreground">{partner.name}</h4>
-                  <p className="text-sm text-muted-foreground">{partner.category}</p>
                 </CardContent>
               </Card>
             ))}
