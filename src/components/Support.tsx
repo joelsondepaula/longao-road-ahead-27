@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Crown, Award, Medal, Heart, Bike, Plane, Star, Shield, Zap, TrendingUp, Users, Globe, Camera, Target } from "lucide-react";
 import { useState, useEffect } from "react";
+import hostdimeLogo from "@/assets/hostdime-logo.svg";
+import telyLogo from "@/assets/tely-logo.png";
 
 const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
@@ -145,13 +147,13 @@ const Support = () => {
     }]
   }];
   const currentPartners = [{
-    name: "Seu Logo Aqui",
-    category: "Equipamentos",
-    icon: <Bike className="w-8 h-8" />
+    name: "HostDime",
+    category: "Hospedagem",
+    logo: hostdimeLogo
   }, {
-    name: "Sua Marca",
-    category: "Nutrição",
-    icon: <Heart className="w-8 h-8" />
+    name: "Tely",
+    category: "Tecnologia",
+    logo: telyLogo
   }, {
     name: "Empresa Parceira",
     category: "Tecnologia",
@@ -256,8 +258,18 @@ const Support = () => {
             {currentPartners.map((partner, index) => (
               <Card key={index} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg group hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-6 text-center">
-                  <div className="text-road-yellow mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {partner.icon}
+                  <div className="mb-3 group-hover:scale-110 transition-transform duration-300 flex items-center justify-center h-12">
+                    {partner.logo ? (
+                      <img 
+                        src={partner.logo} 
+                        alt={`${partner.name} logo`}
+                        className="max-h-12 max-w-full object-contain"
+                      />
+                    ) : (
+                      <div className="text-road-yellow">
+                        {partner.icon}
+                      </div>
+                    )}
                   </div>
                   <h4 className="font-semibold text-foreground">{partner.name}</h4>
                   <p className="text-sm text-muted-foreground">{partner.category}</p>
