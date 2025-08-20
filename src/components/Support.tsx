@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Crown, Award, Medal, Heart, Bike, Plane, Star, Shield, Zap, TrendingUp, Users, Globe, Camera, Target } from "lucide-react";
 import { useState, useEffect } from "react";
 import hostdimeLogo from "@/assets/hostdime-logo.svg";
-import telyLogo from "@/assets/tely-logo.png";
+import telyLogo from "@/assets/tely-logo-new.png";
 
 const Support = () => {
   const [animatedCounts, setAnimatedCounts] = useState({
@@ -263,9 +263,8 @@ const Support = () => {
                       <img 
                         src={partner.logo} 
                         alt={`${partner.name} logo`}
-                        className={`max-h-12 max-w-full object-contain ${
-                          partner.name === 'Tely' ? 'bg-gray-100 p-2 rounded' : ''
-                        }`}
+                        className="max-h-12 max-w-full object-contain"
+                        style={{ maxHeight: '48px', width: 'auto' }}
                       />
                     ) : (
                       <div className="text-road-yellow">
